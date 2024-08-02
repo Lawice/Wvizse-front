@@ -1,1 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
+/* Ajoute un peu de marge supérieure pour compenser la hauteur du header */
+body {
+    padding-top: 100px;
+    /* La hauteur de la navbar */
+}

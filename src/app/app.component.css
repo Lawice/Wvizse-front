@@ -1,0 +1,98 @@
+.navbar-custom {
+    height: 80px;
+    /* Ajustez la hauteur comme vous le souhaitez */
+}
+/* Augmenter la taille du texte dans la navbar */
+.navbar-custom .navbar-brand {
+    font-size: 2rem;
+}
+.navbar-custom .nav-link {
+    font-size: 1.5rem;
+    /* Ajustez la taille du texte comme vous le souhaitez */
+}
+
+.zoom-card {
+    transition: transform 0.3s ease;
+}
+
+
+.zoom-card:hover {
+    transform: scale(1.1);
+}
+
+.card-title {
+    font-size: 2rem; /* taille par défaut */
+}
+
+.search-bar-container {
+    width: 20%;
+}
+
+@media (max-width: 992px) {
+
+    /* Styles pour que le menu burger apparaisse en dessous de la navbar */
+    .navbar-collapse {
+        position: absolute;
+        top: 80px;
+        /* La hauteur de la navbar */
+        left: auto;
+        right: 0;
+        width: auto;
+        /* Ajustez la largeur automatiquement en fonction du contenu */
+        background-color: #f8f9fa;
+        /* Assurez-vous que la couleur de fond correspond à votre navbar */
+        z-index: 1;
+        padding: 10px;
+    }
+
+    .navbar-nav {
+        margin-left: auto;
+        /* Alignez le texte à droite */
+    }
+
+    .navbar-collapse.collapsing,
+    .navbar-collapse.show {
+        display: block;
+    }
+
+    .card-title {
+        font-size: 2rem;
+    }
+
+    .search-bar-container {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container{
+        max-width: 2000px;
+    }
+
+    .card-title {
+        font-size: 2.25rem;
+    }
+}
+
+@media (min-width: 576px) {
+    .card-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .card-container {
+        width: 45%;
+    }
+    
+    .card-title {
+        font-size: 1.3rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .card-title {
+        font-size: 1.75rem;
+    }
+
+}
