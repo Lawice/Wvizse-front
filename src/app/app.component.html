@@ -1,576 +1,64 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top navbar-custom bg-light">
-  <div class="container-fluid">
-      <a class="navbar-brand reset-checkboxes" aria-current="page" href="#">Wvizse</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse bg-light" id="menu">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0 px-2">
-              <li class="nav-item">
-                  <a class="nav-link active" href="#">Compétences</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link active" href="#">Métiers Choisis</a>
-              </li>
-              <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Filière
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <li><h4 class="dropdown-item disabled text-black">La Horde :</h4></li>
-                      <li class="dropdown-item">
-                          <input type="checkbox" class="form-check-input" data-filter="programmation" checked> <!-- data-filter : filtre de filière -->
-                          <label class="form-check-label" for="programmation">Programmation</label>
-                      </li>
-                      <li class="dropdown-item">
-                          <input type="checkbox" class="form-check-input" data-filter="art" checked>
-                          <label class="form-check-label" for="art">Art</label>
-                      </li>
-                      <li class="dropdown-item">
-                          <input type="checkbox" class="form-check-input" data-filter="game-design" checked>
-                          <label class="form-check-label" for="game-design">Game Design</label>
-                      </li>
-                      <li class="dropdown-item">
-                          <input type="checkbox" class="form-check-input" data-filter="tech-art" checked>
-                          <label class="form-check-label" for="tech-art">Tech Art</label>
-                      </li>
-                      <li class="dropdown-item">
-                          <input type="checkbox" class="form-check-input" data-filter="producing" checked>
-                          <label class="form-check-label" for="producing">Producing</label>
-                      </li>
-                      <li class="dropdown-item">
-                          <input type="checkbox" class="form-check-input" data-filter="sound-design" checked>
-                          <label class="form-check-label" for="sound-design">Sound Design</label>
-                      </li>
-                      <li class="dropdown-item">
-                          <input type="checkbox" class="form-check-input" data-filter="business" checked>
-                          <label class="form-check-label" for="business">Business & Événementiel</label>
-                      </li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><h4 class="dropdown-item disabled text-black">Turing :</h4></li>
-                      <li class="dropdown-item">
-                          <input type="checkbox" class="form-check-input" data-filter="ia-big-data" checked>
-                          <label class="form-check-label" for="ia-big-data">IA & Big Data</label>
-                      </li>
-                      <li class="dropdown-item">
-                          <input type="checkbox"  class="form-check-input" data-filter="genie-logiciel" checked>
-                          <label class="form-check-label" for="genie-logiciel">Génie Logiciel</label>
-                      </li>
-                      <li class="dropdown-item">
-                          <input type="checkbox" class="form-check-input" data-filter="cloud-cybersecurite" checked>
-                          <label class="form-check-label" for="cloud-cybersecurite">Cloud & Cybersécurité</label>
-                      </li>
-                  </ul>
-              </li>
-          </ul>
-          <form class="d-flex px-2 search-bar-container" role="search">
-              <input class="form-control me-2 flex-grow-1" type="search" placeholder="Rechercher" aria-label="Search">
-          </form>                    
-      </div>
-  </div>
+    <div class="container-fluid">
+        <a class="navbar-brand" aria-current="page" href="#" (click)="onResetFilters()">Wvizse</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse bg-light" id="menu">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 px-2">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Cursus</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Métiers Choisis</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Filière</a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><h4 class="dropdown-item disabled text-black">La Horde :</h4></li>
+                        <ng-container *ngFor="let checkbox of checkboxList">
+                            <ng-container *ngIf="checkbox.sector === 'HORDE'">
+                                <li class="dropdown-item">
+                                    <input type="checkbox" class="form-check-input" [(ngModel)]="checkbox.checked" (change)="onApplyFilters()" [attr.data-filter]="checkbox.value">
+                                    <label class="form-check-label" [for]="checkbox.value">{{ checkbox.label }}</label>
+                                </li>
+                            </ng-container>
+                        </ng-container>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><h4 class="dropdown-item disabled text-black">Turing :</h4></li>
+                        <ng-container *ngFor="let checkbox of checkboxList">
+                            <ng-container *ngIf="checkbox.sector === 'TURING'">
+                                <li class="dropdown-item">
+                                    <input type="checkbox" class="form-check-input" [(ngModel)]="checkbox.checked" (change)="onApplyFilters()" [attr.data-filter]="checkbox.value">
+                                    <label class="form-check-label" [for]="checkbox.value">{{ checkbox.label }}</label>
+                                </li>
+                            </ng-container>
+                        </ng-container>
+                    </ul>
+                </li>
+            </ul>
+            <form class="d-flex px-2 search-bar-container" role="search" (input)="onApplyFilters()">
+                <input class="form-control me-2 flex-grow-1" type="search" [(ngModel)]="searchQuery" name="searchQuery" placeholder="Rechercher" aria-label="Search">
+            </form>
+        </div>
+    </div>
 </nav>
 
 <div class="container px-0">
-  <div class="row gx-5">
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="programmation" [attr.job-name] = "jobList[0].tags"> <!-- job-name : nom du métier / data-category : filière du métier -->
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img [src]="jobList[0].picture" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">{{jobList[0].name}}</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="programmation" job-name = "Architecte Technique">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img [src]="jobList[0].picture" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Architecte Technique</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="programmation" job-name = "Data manager">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_prog.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Data manager</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="programmation" job-name = "Développeur">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_prog.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Développeur</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="programmation" job-name = "Développeur IA Intelligence Artificielle">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_prog.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Développeur IA</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="programmation" job-name = "Développeur Audio">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_prog.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Développeur Audio</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="programmation" job-name = "Développeur Web">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_prog.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Développeur Web</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="programmation" job-name = "Développeur Physique">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_prog.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Développeur Physique</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="programmation" job-name = "Développeur 3D Graphique">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_prog.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Développeur 3D / Graphique</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="programmation" job-name="Développeur Tools">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_prog.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Développeur Tools</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="programmation" job-name="Développeur Engine Développeur Moteur">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_prog.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Développeur Engine</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="programmation" job-name="Développeur Réseau">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_prog.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Développeur Réseau</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="programmation" job-name="Ingénieur Informatique multimédia">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_prog.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Ingénieur Informatique & Multimédia</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="art" job-name="Directeur Artistique DA">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_art.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Directeur Artistique</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="art" job-name="Character Designer Chara Designer">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_art.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Character Designer</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="art" job-name="Concept Artist">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_art.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Concept Artist</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="art" job-name="Environment Artist Evironement">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_art.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Environment Artist</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="art" job-name="StoryBoarder">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_art.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">StoryBoarder</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="art" job-name="Modélisateur 3D">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_art.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Modélisateur 3D</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="art" job-name="Rigger">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_art.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Rigger</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="art" job-name="Animateur 2D 3D">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_art.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Animateur 2D/3D</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="art" job-name="Cinematic Artist">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_art.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Cinematic Artist</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="art" job-name="Artiste Effet Visuel VFX">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_art.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Artiste Effet Visuel (VFX)</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="art" job-name="Designer UI User Inteface">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_art.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Designer UI</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="game-design" job-name="Game Designer">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_gd.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Game Designer</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="game-design" job-name="Level Designer">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_gd.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Level Designer</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="game-design" job-name="Narrative Designer">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_gd.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Narrative Designer</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="game-design" job-name="UX Designer User Experience">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_gd.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">UX Designer</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="game-design" job-name="Quest Designer">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_gd.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Quest Designer</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="game-design" job-name="Économic Designer">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_gd.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Économic Designer</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="game-design" job-name="Directeur QA Quality Assurance">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_gd.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Directeur QA</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="game-design" job-name="QA Tester Quality Assurance">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_gd.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">QA Tester</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="tech-art" job-name="Directeur Technique Graphique">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_techart.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Directeur Technique Graphique</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="tech-art" job-name="Directeur Technique Art">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_techart.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Directeur Technique Art</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="tech-art" job-name="Technical Artist">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_techart.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Technical Artist</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="producing" job-name="Producteur">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_prod.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Producteur</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="sound-design" job-name="Sound Designer SFX">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_sound.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Sound Designer</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="sound-design" job-name="Ingénieur du Son">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_sound.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Ingénieur du Son</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="business"  job-name="Responsable de Production Événementiel">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_event.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Responsable de Production Événementiel</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="business" job-name="Manager E-sportif">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_event.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Manager E-sportif</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="business" job-name="Responsable de Comunication">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_event.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Responsable de Comunication</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="business" job-name="Responsable de la propriété intellectuelle">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_event.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Responsable de la propriété intellectuelle</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="ia-big-data" job-name="Data Analyst">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_turring.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Data Analyst</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="ia-big-data" job-name="Data Scientist">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_turring.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Data Scientist</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="ia-big-data" job-name="Architecte Big Data">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_turring.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Architecte Big Data</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="ia-big-data" job-name="Ingénieur ML Machine Learning IA Intelligence Artificielle">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_turring.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Ingénieur ML</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="ia-big-data" job-name="Chief Data Officier">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_turring.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Chief Data Officier</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="genie-logiciel" job-name="Ingénieur Génie Logiciel">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_turring.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Ingénieur en Génie Logiciel</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="cloud-cybersecurite" job-name="Spécialiste Cybersécurité">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_turring.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Spécialiste en Cybersécurité</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" data-category="cloud-cybersecurite" job-name="Ingénieur Cloud">
-          <a class="card-linker" href="#">
-              <div class="card border-0 rounded-5 shadow zoom-card">
-                  <img src="images/test_turring.png" class="card-img-fluid rounded-5 shadow">
-                  <div class="card-img-overlay d-flex align-items-end p-3">
-                      <h1 class="card-title text-center w-100 mb-15">Ingénieur Cloud</h1>
-                  </div>
-              </div>
-          </a>
-      </div>
-  </div>
+    <div class="row gx-5">
+        <ng-container *ngFor="let card of cardsList">
+            <ng-container *ngIf="card.visible">
+                <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" [attr.sector]="card.sector" [attr.cursus]="card.cursus" [attr.job-tags]="card.tags">
+                    <a class="card-linker" href="#">
+                        <div class="card border-0 rounded-5 shadow zoom-card">
+                            <img [src]="card.picture" class="card-img-fluid rounded-5 shadow">
+                            <div class="card-img-overlay d-flex align-items-end p-3">
+                                <h1 class="card-title text-center w-100 mb-15">{{card.name}}</h1>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
 </div>

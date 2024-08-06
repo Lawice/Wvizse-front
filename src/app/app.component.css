@@ -15,7 +15,6 @@
     transition: transform 0.3s ease;
 }
 
-
 .zoom-card:hover {
     transform: scale(1.1);
 }
@@ -29,15 +28,14 @@
 }
 
 @media (max-width: 992px) {
-
     /* Styles pour que le menu burger apparaisse en dessous de la navbar */
     .navbar-collapse {
         position: absolute;
         top: 80px;
         /* La hauteur de la navbar */
-        left: auto;
+        left: 0;
         right: 0;
-        width: auto;
+        width: 100%;
         /* Ajustez la largeur automatiquement en fonction du contenu */
         background-color: #f8f9fa;
         /* Assurez-vous que la couleur de fond correspond à votre navbar */
@@ -65,7 +63,7 @@
 }
 
 @media (min-width: 1200px) {
-    .container{
+    .container {
         max-width: 2000px;
     }
 
@@ -82,9 +80,9 @@
 
 @media (max-width: 576px) {
     .card-container {
-        width: 45%;
+        width: 100%; /* Assurez-vous que les cartes prennent toute la largeur de l'écran */
     }
-    
+
     .card-title {
         font-size: 1.3rem;
     }
@@ -94,5 +92,4 @@
     .card-title {
         font-size: 1.75rem;
     }
-
 }
