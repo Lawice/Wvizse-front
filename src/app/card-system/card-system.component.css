@@ -1,0 +1,119 @@
+/* Assurez-vous que le body n'a pas de marges indésirables */
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Empêche le débordement horizontal */
+}
+
+.navbar-custom {
+    height: 80px;
+}
+
+.navbar-custom .navbar-brand {
+    font-size: 2rem;
+}
+
+.navbar-custom .nav-link {
+    font-size: 1.5rem;
+}
+
+.custom-checkbox {
+    margin-right: 0.5rem;
+}
+
+.zoom-card {
+    transition: transform 0.3s ease;
+}
+
+.zoom-card:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.card-title {
+    font-size: 2rem;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 15px;
+    position: relative; 
+    top: 20px;
+}
+
+.search-bar-container {
+    width: 20%;
+}
+
+@media (max-width: 992px) {
+    .navbar-collapse {
+        position: absolute;
+        top: 80px;
+        left: 0;
+        right: 0;
+        width: 100%;
+        background-color: #f8f9fa;
+        z-index: 1;
+        padding: 10px;
+    }
+
+    .navbar-nav {
+        margin-left: auto;
+    }
+
+    .navbar-collapse.collapsing,
+    .navbar-collapse.show {
+        display: block;
+    }
+
+    .card-title {
+        font-size: 2rem;
+    }
+
+    .search-bar-container {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 2000px;
+    }
+
+    .card-title {
+        font-size: 2.25rem;
+    }
+}
+
+@media (min-width: 576px) {
+    .card-title {
+        font-size: 1.5rem;
+    }
+    .card-img-small {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .card-container {
+        width: 90%;
+        margin: 0 auto; /* Centrez le conteneur */
+    }
+
+    .card-img-fluid {
+        height: 100px;
+    }
+
+    .card-title {
+        font-size: 1.3rem;
+        margin-bottom: 45px;
+    }
+
+    .card-img-large {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .card-title {
+        font-size: 1.75rem;
+    }
+}
