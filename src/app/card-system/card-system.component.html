@@ -19,8 +19,8 @@
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Filière</a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <li class="dropdown-item">
-                            <input type="checkbox" class="form-check-input custom-checkbox" [(ngModel)]="checkboxParentList[0].checked" (change)="onToggleParent(checkboxParentList[0])" [attr.data-filter]="checkboxParentList[0].value" [indeterminate]="checkboxParentList[0].indeterminate">
-                            <label class="form-check-label " [for]="checkboxParentList[0].value">{{ checkboxParentList[0].label }} :</label>
+                            <input type="checkbox" class="form-check-input custom-checkbox2" [(ngModel)]="checkboxParentList[0].checked" (change)="onToggleParent(checkboxParentList[0])" [attr.data-filter]="checkboxParentList[0].value" [indeterminate]="checkboxParentList[0].indeterminate">
+                            <label class="form-check-label h4" [for]="checkboxParentList[0].value">{{ checkboxParentList[0].label }} :</label>
                         </li>
                         <ng-container *ngFor="let checkbox of checkboxList">
                             <ng-container *ngIf="checkbox.school === 'HORDE'">
@@ -32,8 +32,8 @@
                         </ng-container>
                         <li><hr class="dropdown-divider"></li>
                         <li class="dropdown-item">
-                            <input type="checkbox" class="form-check-input custom-checkbox" [(ngModel)]="checkboxParentList[1].checked" (change)="onToggleParent(checkboxParentList[1])" [attr.data-filter]="checkboxParentList[1].value" [indeterminate]="checkboxParentList[1].indeterminate">
-                            <label class="form-check-label " [for]="checkboxParentList[1].value">{{ checkboxParentList[1].label }} :</label>  
+                            <input type="checkbox" class="form-check-input custom-checkbox2" [(ngModel)]="checkboxParentList[1].checked" (change)="onToggleParent(checkboxParentList[1])" [attr.data-filter]="checkboxParentList[1].value" [indeterminate]="checkboxParentList[1].indeterminate">
+                            <label class="form-check-label h4" [for]="checkboxParentList[1].value">{{ checkboxParentList[1].label }} :</label>  
                         </li>
                         <ng-container *ngFor="let checkbox of checkboxList">
                             <ng-container *ngIf="checkbox.school === 'TURING'">
@@ -54,7 +54,7 @@
 </nav>
 
 <!-- Modal -->
-<div class="modal fade" id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
+<div class="modal fade rounded-5" id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -64,34 +64,35 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-12 	col-lg-6">
-                        <img [src]="selectedCard?.picture" class="img-fluid mb-3">
+                        <img [src]="selectedCard?.picture" class="img-fluid mb-3 rounded-5">
                     </div>
                     <div class="col-12 	col-lg-6">
-                        <p>{{ selectedCard?.description }}</p>
+                        <h6>Description :</h6>
+                        <p [innerHTML]="selectedCard?.description"></p>
+                        <ng-container *ngIf="selectedCard?.skills?.length !== 0">
+                            <hr>
+                            <div class="section2">
+                                <h6>Compétences requise :</h6>
+                                <ul>                
+                                    <ng-container *ngFor="let skill of selectedCard?.skills">
+                                    <li>{{skill}}</li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="selectedCard?.requirement?.length !== 0">
+                            <hr>
+                            <div class="section3"> 
+                                <h6>Prérequis :</h6>
+                                <ul>                
+                                    <ng-container *ngFor="let requirement of selectedCard?.requirement">
+                                    <li>{{requirement}}</li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                        </ng-container>
                     </div>
                 </div>
-                <ng-container *ngIf="selectedCard?.skills?.length !== 0">
-                    <hr>
-                    <div class="section2">
-                        <h6>Compétences requise</h6>
-                        <ul>                
-                            <ng-container *ngFor="let skill of selectedCard?.skills">
-                            <li>{{skill}}</li>
-                            </ng-container>
-                        </ul>
-                    </div>
-                </ng-container>
-                <ng-container *ngIf="selectedCard?.requirement?.length !== 0">
-                    <hr>
-                    <div class="section3"> 
-                        <h6>Prérequis</h6>
-                        <ul>                
-                            <ng-container *ngFor="let requirement of selectedCard?.requirement">
-                            <li>{{requirement}}</li>
-                            </ng-container>
-                        </ul>
-                    </div>
-                </ng-container>
             </div>
         </div>
     </div>

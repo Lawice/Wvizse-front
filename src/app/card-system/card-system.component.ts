@@ -23,11 +23,6 @@ export class CardSystemComponent {
 
   selectedCard: Card | null = null;
 
-  onOpenCardModal(card: Card): void {
-      this.selectedCard = card;
-
-  }
-
   ngOnInit(): void {
       this.filter = new Filter();
       this.searchQuery = this.filter.searchQuery;
@@ -53,5 +48,10 @@ export class CardSystemComponent {
   onToggleChild(parentCheckbox: CheckboxParent) {
     this.filter.ToggleChild(parentCheckbox);
   }
+  onOpenCardModal(card: Card): void {
+    this.selectedCard = card;
+    this.selectedCard.description = card.description.replace(/\. /g, '.<br>');
+}
+
 
 }

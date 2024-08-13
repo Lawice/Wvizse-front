@@ -21,6 +21,11 @@ body {
     margin-right: 0.5rem;
 }
 
+.custom-checkbox2 {
+    margin-top: 0.6rem;
+    margin-right: 0.6rem;
+}
+
 .zoom-card {
     transition: transform 0.3s ease;
 }
