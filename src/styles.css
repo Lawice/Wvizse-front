@@ -1,5 +1,235 @@
-/* Ajoute un peu de marge supérieure pour compenser la hauteur du header */
-body {
-    padding-top: 100px;
-    /* La hauteur de la navbar */
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
+}
+
+:root{
+    --hover-color: rgb(204, 15, 44);
+    --heading-font: "Montserrat",  sans-serif;
+    --default-font: "Roboto",  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --nav-font: "Poppins",  sans-serif;
+}
+
+#app-root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+  
+footer {
+    margin-top: auto;
+}
+
+/*#region Header*/
+.header {
+    --background-color: rgb(0, 0, 0);
+    --default-color: #ffffff;
+    --heading-color: #ffffff;
+    color: var(--default-color);
+    background-color: var(--background-color);
+    padding: 15px 0;
+    transition: all 0.5s;
+    z-index: 997;
+}
+  
+.header .logo {
+    line-height: 1;
+}
+  
+.header .logo img {
+    max-height: 36px;
+    margin-right: 8px;
+}
+  
+.header .logo h1 {
+    font-size: 30px;
+    margin: 0;
+    font-weight: 700;
+    color: var(--heading-color);
+}
+  
+.header .header-social-links {
+    padding-right: 15px;
+}
+  
+.header .header-social-links a {
+    color: color-mix(in srgb, var(--default-color), transparent 40%);
+    padding-left: 6px;
+    display: inline-block;
+    transition: 0.3s;
+    font-size: 16px;
+}
+  
+.header .header-social-links a:hover {
+    color: var(--hover-color);
+}
+  
+.header .header-social-links a i {
+    line-height: 0px;
+}
+  
+@media (max-width: 1200px) {
+    .header .logo {
+      order: 1;
+    }
+  
+    .header .header-social-links {
+      order: 2;
+    }
+
+}
+/*#endregion*/
+
+/* Menu navigation général */
+@media (min-width: 1201px) {
+    .navmenu {
+        padding: 0;
+    }
+    
+    .navmenu ul {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        list-style: none;
+        align-items: center;
+    }
+    
+    .navmenu li {
+        position: relative;
+    }
+    
+    .navmenu a,
+    .navmenu a:focus {
+        color: var(--nav-color);
+        padding: 18px 15px;
+        font-size: 16px;
+        font-family: var(--nav-font);
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        white-space: nowrap;
+        transition: 0.3s;
+    }
+    
+    .navmenu a i,
+    .navmenu a:focus i {
+        font-size: 12px;
+        line-height: 0;
+        margin-left: 5px;
+        transition: 0.3s;
+    }
+    
+    .navmenu li:last-child a {
+        padding-right: 0;
+    }
+    
+    .navmenu li:hover>a,
+    .navmenu .active,
+    .navmenu .active:focus {
+        color: var(--hover-color);
+    }
+    
+    .navmenu .dropdown ul {
+        margin: 0;
+        padding: 10px 0;
+        background: var(--nav-dropdown-background-color);
+        display: block;
+        position: absolute;
+        visibility: hidden;
+        left: 14px;
+        top: 130%;
+        opacity: 0;
+        transition: 0.3s;
+        border-radius: 4px;
+        z-index: 99;
+        box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .navmenu .dropdown ul li {
+        min-width: 200px;
+    }
+    
+    .navmenu .dropdown ul a {
+        padding: 10px 20px;
+        font-size: 15px;
+        text-transform: none;
+        color: var(--nav-dropdown-color);
+    }
+    
+    .navmenu .dropdown ul a i {
+        font-size: 12px;
+    }
+    
+    .navmenu .dropdown ul a:hover,
+    .navmenu .dropdown ul .active:hover,
+    .navmenu .dropdown ul li:hover>a {
+        color: var(--hover-color);
+    }
+    
+    .navmenu .dropdown:hover>ul {
+        opacity: 1;
+        top: 100%;
+        visibility: visible;
+    }
+    
+    .navmenu .dropdown .dropdown ul {
+        top: 0;
+        left: -90%;
+        visibility: hidden;
+    }
+    
+    .navmenu .dropdown .dropdown:hover>ul {
+        opacity: 1;
+        top: 0;
+        left: -100%;
+        visibility: visible;
+    }
+
+    .mobile-nav-toggle {
+        display: none;
+    }
+}
+
+/* Affichage mobile du menu burger */
+@media (max-width: 1200px) {
+    .mobile-nav-toggle {
+        font-size: 24px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 10px;
+        margin: 0;
+        color: var(--nav-color);
+        display: block;
+    }
+
+    .navmenu {
+        display: none;
+        background-color: var(--background-color);
+        position: absolute;
+        top: 60px; 
+        left: 0;
+        right: 0;
+        z-index: 998;
+    }
+    
+    /* Menu mobile visible lorsqu'il est activé */
+    .navmenu.active {
+        display: block;
+    }
+
+
+    .navmenu ul {
+        padding-top: 5;
+        list-style: none;
+        align-items: center;
+    }
+    
 }

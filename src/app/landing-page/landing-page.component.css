@@ -1,0 +1,138 @@
+
+  :root { 
+    --background-color: #ffffff; /* Background color for the entire website, including individual sections */
+    --default-color: #555555; /* Default color used for the majority of the text content across the entire website */
+    --heading-color: #151515; /* Color for headings, subheadings and title throughout the website */
+    --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
+    --contrast-color: #ffffff; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
+  }
+
+  
+  /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
+  
+  .light-background {
+    --background-color: #f9f9f9;
+    --surface-color: #ffffff;
+  }
+  
+  .dark-background {
+    --background-color: #000000;
+    --default-color: #ffffff;
+    --heading-color: #ffffff;
+    --surface-color: #252525;
+    --contrast-color: #ffffff;
+  }
+  
+  /* Smooth scroll */
+  :root {
+    scroll-behavior: smooth;
+  }
+  
+  /*--------------------------------------------------------------
+  # General Styling & Shared Classes
+  --------------------------------------------------------------*/
+  body {
+    color: var(--default-color);
+    background-color: var(--background-color);
+    font-family: var(--default-font);
+  }
+  
+  a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: 0.3s;
+  }
+  
+  a:hover {
+    color: color-mix(in srgb, var(--accent-color), transparent 25%);
+    text-decoration: none;
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--heading-color);
+    font-family: var(--heading-font);
+  }
+
+  
+  /*--------------------------------------------------------------
+  # Global Sections
+  --------------------------------------------------------------*/
+  section,
+  .section {
+    color: var(--default-color);
+    background-color: var(--background-color);
+    padding: 60px 0;
+    scroll-margin-top: 90px;
+    overflow: clip;
+  }
+  
+  @media (max-width: 1199px) {
+  
+    section,
+    .section {
+      scroll-margin-top: 66px;
+    }
+  }
+  
+  
+  /* #region Main*/
+  .main {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    padding: 80px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .main .container {
+    position: relative;
+    z-index: 3;
+  }
+  
+  .main h2 {
+    margin: 0;
+    font-size: 48px;
+    font-weight: 700;
+  }
+  
+  .main p {
+    margin: 10px 0 0 0;
+    font-size: 24px;
+    color: var(--heading-color);
+  }
+  
+  .main .btn-get-started {
+    background-color: red;
+    font-weight: 400;
+    font-size: 15px;
+    letter-spacing: 1px;
+    display: inline-block;
+    text-transform: uppercase;
+    padding: 12px 40px;
+    margin: 30px 0 0 0;
+    border-radius: 4px;
+    transition: 0.5s;
+  }
+  
+  .main .btn-get-started:hover {
+    background-color: color-mix(in srgb, var(--background-color) 90%, var(--default-color) 15%);
+  }
+  
+  @media (max-width: 768px) {
+    .main h2 {
+      font-size: 32px;
+    }
+  
+    .main p {
+      font-size: 18px;
+    }
+  }
+
+/*#endregion*/
