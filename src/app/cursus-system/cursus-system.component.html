@@ -1,0 +1,159 @@
+<header class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+        <a href="" class="logo d-flex align-items-center me-auto me-xl-0">
+            <h1 class="sitename">WVIZSE</h1>
+        </a>
+
+        <button class="mobile-nav-toggle d-xl-none" (click)="onToggleMobileMenu()">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <nav class="navmenu" [class.active]="isMobileMenuActive">
+            <ul>
+                <li><a href="">Home</a></li>
+                <li><a href="jobs">Métiers</a></li>
+                <li><a href="cursus" class="active">Cursus</a></li>
+                <li><a href="">Métiers Choisis</a></li>
+                <li><a href="">Compétences</a></li>
+            </ul>
+        </nav>
+
+
+
+        <div class="header-social-links">
+            <a target="_blank" href="https://x.com/LaHordeTech"><i class="bi bi-twitter-x"></i></a>
+            <a target="_blank" href="https://www.facebook.com/LaHordeTech"><i class="bi bi-facebook"></i></a>
+            <a target="_blank" href="https://www.instagram.com/lahorde.tech"><i class="bi bi-instagram"></i></a>
+            <a target="_blank" href="https://www.linkedin.com/company/la-horde-tech/"><i class="bi bi-linkedin"></i></a>
+            <a target="_blank" href="https://www.twitch.tv/lahordetech"><i class="bi bi-twitch"></i></a>
+            <a target="_blank" href="https://www.youtube.com/channel/UC0GYinyxOCP4dRDALNnwsJg"><i class="bi bi-youtube"></i></a>
+            <a target="_blank" href="https://discord.com/invite/tcnrfGwaPX"><i class="bi bi-discord"></i></a>
+            <a target="_blank" href="https://www.tiktok.com/@lahordetech"><i class="bi bi-tiktok"></i></a>
+        </div>
+    </div>
+</header>
+
+<div class="modal fade rounded-5" id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="cardModalLabel">{{ selectedCard?.name }}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 	col-lg-6">
+                        <img [src]="selectedCard?.picture" class="img-fluid mb-3 rounded-5">
+                    </div>
+                    <div class="col-12 	col-lg-6">
+                        <h6>Description :</h6>
+                        <p [innerHTML]="selectedCard?.description"></p>
+                        <ng-container *ngIf="selectedCard?.skills?.length !== 0">
+                            <hr>
+                            <div class="section2">
+                                <h6>Compétences requise :</h6>
+                                <ul>                
+                                    <ng-container *ngFor="let skill of selectedCard?.skills">
+                                    <li>{{skill}}</li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="selectedCard?.requirement?.length !== 0">
+                            <hr>
+                            <div class="section3"> 
+                                <h6>Prérequis :</h6>
+                                <ul>                
+                                    <ng-container *ngFor="let requirement of selectedCard?.requirement">
+                                    <li>{{requirement}}</li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="main">
+    <div class="container mt-5">
+        <div class="row gx-5">
+            <div class="col-9">
+                <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>École</th>
+                                <th>Cursus</th>
+                                <th>Bachelor 1</th>
+                                <th>Bachelor 2</th>
+                                <th>Bachelor 3</th>
+                                <th>Master 1</th>
+                                <th>Master 2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor = "let school of schoolKeys">
+                                <tr>
+                                    <td [attr.rowspan]="groupedCursus[school].length">{{ school }}</td>
+                                    <td (click)="onToggleRowSelection(school, groupedCursus[school][0].label)">  {{groupedCursus[school][0].label}}</td>
+                                    <ng-container *ngIf="groupedCursus[school][0].diplome === bachelorMaster || groupedCursus[school][0].diplome === bachelor || groupedCursus[school][0].diplome === prepa; else noBachelor">
+                                        <td (click)="onToggleSelection(school, groupedCursus[school][0].label, 1)" [ngClass]="{'selected': isSelected(school, groupedCursus[school][0].label, 1)}"></td>
+                                        <td (click)="onToggleSelection(school, groupedCursus[school][0].label, 2)" [ngClass]="{'selected': isSelected(school, groupedCursus[school][0].label, 2)}"></td>
+                                        <td (click)="onToggleSelection(school, groupedCursus[school][0].label, 3)" [ngClass]="{'selected': isSelected(school, groupedCursus[school][0].label, 3)}"></td>
+                                    </ng-container>
+                                    <ng-template #noBachelor>
+                                        <td colspan="3" class="bg-dark"></td>
+                                    </ng-template>
+                                    <ng-container *ngIf="groupedCursus[school][0].diplome === bachelorMaster || groupedCursus[school][0].diplome === master || groupedCursus[school][0].diplome === prepa; else noMaster">
+                                        <td (click)="onToggleSelection(school, groupedCursus[school][0].label, 4)" [ngClass]="{'selected': isSelected(school, groupedCursus[school][0].label, 4)}"></td>
+                                        <td (click)="onToggleSelection(school, groupedCursus[school][0].label, 5)" [ngClass]="{'selected': isSelected(school, groupedCursus[school][0].label, 5)}"></td>
+                                    </ng-container>
+                                    <ng-template #noMaster>
+                                        <td colspan="2" class="bg-dark"></td>
+                                    </ng-template>
+                                </tr>
+                                <tr *ngFor="let cursus of groupedCursus[school].slice(1)">
+                                    <td (click)="onToggleRowSelection(school, cursus.label)">  {{ cursus.label }}</td>
+                                    <ng-container *ngIf="cursus.diplome === bachelorMaster || cursus.diplome === bachelor || cursus.diplome === prepa; else noBachelor">
+                                        <td (click)="onToggleSelection(school, cursus.label, 1)" [ngClass]="{'selected': isSelected(school, cursus.label, 1)}"></td>
+                                        <td (click)="onToggleSelection(school, cursus.label, 2)" [ngClass]="{'selected': isSelected(school, cursus.label, 2)}"></td>
+                                        <td (click)="onToggleSelection(school, cursus.label, 3)" [ngClass]="{'selected': isSelected(school, cursus.label, 3)}"></td>
+                                    </ng-container>
+                                    <ng-template #noBachelor>
+                                        <td colspan="3" class="bg-dark"></td>
+                                    </ng-template>
+                                    <ng-container *ngIf="cursus.diplome === bachelorMaster || cursus.diplome === master || cursus.diplome === prepa; else noMaster">
+                                        <td (click)="onToggleSelection(school, cursus.label, 4)" [ngClass]="{'selected': isSelected(school, cursus.label, 4)}"></td>
+                                        <td (click)="onToggleSelection(school, cursus.label, 5)" [ngClass]="{'selected': isSelected(school, cursus.label, 5)}"></td>
+                                    </ng-container>
+                                    <ng-template #noMasterr>
+                                        <td colspan="3" class="bg-dark"></td>
+                                    </ng-template>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                </table>
+            </div>
+            <div class="col-3">
+                <div class="row">
+                    <ng-container *ngFor="let card of cardsList">
+                        <ng-container *ngIf="card.visible">
+                            <div class="col-12 mb-5 card-container" [attr.sector]="card.school" [attr.cursus]="card.cursus" [attr.job-tags]="card.tags">
+                                <a class="card-linker" data-bs-toggle="modal" data-bs-target="#cardModal"  (click)="onOpenCardModal(card)">
+                                    <div class="card border-0 rounded-5 shadow zoom-card">
+                                        <img [src]="card.pictureSmall" class="card-img-fluid rounded-5 shadow">
+                                        <div class="card-img-overlay d-flex align-items-end p-3">
+                                            <h5 class="card-title"> {{card.name}} </h5>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,23 +1,22 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top navbar-custom bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" aria-current="page"  (click)="onResetFilters()">Wvizse</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+<header class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+        <a a class="no-link logo d-flex align-items-center me-auto me-xl-0" (click)="onResetFilters()">
+            <h1 class="sitename">WVIZSE</h1>
+        </a>
+
+        <button class="mobile-nav-toggle d-xl-none" (click)="onToggleMobileMenu()">
+            <i class="bi bi-list"></i>
         </button>
-        <div class="collapse navbar-collapse bg-light" id="menu">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 px-2">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">Cursus</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">Métiers Choisis</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">Compétences</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> Filière</a>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+        <nav class="navmenu" [class.active]="isMobileMenuActive">
+            <ul>
+                <li><a href="">Home</a></li>
+                <li><a href="jobs"class="active">Métiers</a></li>
+                <li><a href="cursus">Cursus</a></li>
+                <li><a href="">Métiers Choisis</a></li>
+                <li><a href="">Compétences</a></li>
+                <li class="dropdown"><a class="no-link toggle-dropdown" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Filière :<i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
                         <li class="dropdown-item">
                             <label class="form-check-label h4 checkbox-title">
                                 <input type="checkbox" class="form-check-input custom-checkbox2 h5" [(ngModel)]="checkboxParentList[0].checked" (change)="onToggleParent(checkboxParentList[0])" [attr.data-filter]="checkboxParentList[0].value" [indeterminate]="checkboxParentList[0].indeterminate">
@@ -52,14 +51,18 @@
                             </ng-container>
                         </ng-container>
                     </ul>
-                </li>                
+                </li>
+                <form class="d-flex px-2 search-bar-container" role="search" (input)="onApplyFilters()">
+                    <input class="form-control me-2 flex-grow-1" type="search" [(ngModel)]="searchQuery" name="searchQuery" placeholder="Rechercher" aria-label="Search">
+                </form>
             </ul>
-            <form class="d-flex px-2 search-bar-container" role="search" (input)="onApplyFilters()">
-                <input class="form-control me-2 flex-grow-1" type="search" [(ngModel)]="searchQuery" name="searchQuery" placeholder="Rechercher" aria-label="Search">
-            </form>
+
+        </nav>
+
+        <div class="header-social-links">
         </div>
     </div>
-</nav>
+</header>
 
 <!-- Modal -->
 <div class="modal fade rounded-5" id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
@@ -107,22 +110,24 @@
 </div>
 
 <!-- Cards -->
-<div class="container px-0">
-    <div class="row gx-5">
-        <ng-container *ngFor="let card of cardsList">
-            <ng-container *ngIf="card.visible">
-                <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" [attr.sector]="card.school" [attr.cursus]="card.cursus" [attr.job-tags]="card.tags">
-                    <a class="card-linker" data-bs-toggle="modal" data-bs-target="#cardModal"  (click)="onOpenCardModal(card)">
-                        <div class="card border-0 rounded-5 shadow zoom-card">
-                            <img [src]="card.picture" class="card-img-fluid rounded-5 shadow card-img-large">
-                            <img [src]="card.pictureSmall" class="card-img-fluid rounded-5 shadow card-img-small">
-                            <div class="card-img-overlay d-flex align-items-end p-3">
-                                <h1 class="card-title text-center">{{card.name}}</h1>
+<section class="main dark-background">
+    <div class="container px-0">
+        <div class="row gx-5">
+            <ng-container *ngFor="let card of cardsList">
+                <ng-container *ngIf="card.visible">
+                    <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" [attr.sector]="card.school" [attr.cursus]="card.cursus" [attr.job-tags]="card.tags">
+                        <a class="card-linker" data-bs-toggle="modal" data-bs-target="#cardModal"  (click)="onOpenCardModal(card)">
+                            <div class="card border-0 rounded-5 shadow zoom-card">
+                                <img [src]="card.picture" class="card-img-fluid rounded-5 shadow card-img-large">
+                                <img [src]="card.pictureSmall" class="card-img-fluid rounded-5 shadow card-img-small">
+                                <div class="card-img-overlay d-flex align-items-end p-3">
+                                    <h1 class="card-title text-center">{{card.name}}</h1>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                </ng-container>
             </ng-container>
-        </ng-container>
+        </div>
     </div>
-</div>
+</section>

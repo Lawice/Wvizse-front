@@ -1,0 +1,30 @@
+a {
+    text-decoration: none;
+}
+
+.main {
+    padding-top: 100px;
+}
+
+.selected {
+    background-color: rgb(0, 250, 0);
+}
+
+.card-title {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 0px;
+}
+
+.card-img-fluid {
+    height: 80px;
+}
+
+.zoom-card {
+    transition: transform 0.3s ease;
+}
+
+.zoom-card:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}

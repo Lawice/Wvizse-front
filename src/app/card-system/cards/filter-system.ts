@@ -1,13 +1,13 @@
 import { Card } from "./card";
 import { Cards } from "./mock-card-list";
-import { Checkbox, CheckboxParent } from "./checkbox";
-import { Checkboxes, CheckboxParents } from "./checkbox-list";
+import { Cursus, School } from "./cursus";
+import { CursusList, Schools } from "./cursus-list";
 
 export class Filter{
     searchQuery: string = '';
     cardsList: Card[] = Cards;
-    checkboxList : Checkbox[] = Checkboxes;
-    checkboxParentList : CheckboxParent [] = CheckboxParents;
+    checkboxList : Cursus[] = CursusList;
+    checkboxParentList : School [] = Schools;
 
     ApplyFilters(){
         this.cardsList.forEach(card => {
@@ -28,7 +28,7 @@ export class Filter{
         this.ApplyFilters();
     }
 
-    ToggleParent(parentCheckbox: CheckboxParent) {
+    ToggleParent(parentCheckbox: School) {
         const isChecked = parentCheckbox.checked;
         this.checkboxList.forEach(checkbox => {
             if(checkbox.school === parentCheckbox.value){
@@ -39,7 +39,7 @@ export class Filter{
         this.ApplyFilters();
     }
 
-    ToggleChild(parentCheckbox: CheckboxParent) {
+    ToggleChild(parentCheckbox: School) {
         const filteredCheckboxes = this.checkboxList.filter(checkbox => checkbox.school ===parentCheckbox.value);
         const allChecked = filteredCheckboxes.every(checkbox => checkbox.checked);
         const noneChecked  = filteredCheckboxes.every(checkbox => !checkbox.checked);

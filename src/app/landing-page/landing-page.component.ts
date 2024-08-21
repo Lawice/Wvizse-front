@@ -10,13 +10,11 @@ import { CommonModule } from '@angular/common';
   styleUrl: './landing-page.component.css'
 })
 export class LandingPageComponent {
-  isMobileMenuActive = false;
+  isMobileMenuActive:boolean = false;
 
-  toggleMobileMenu() {
-    console.log("Menu toggle clicked");
+  onToggleMobileMenu() {
     this.isMobileMenuActive = !this.isMobileMenuActive;
-    console.log("isMobileMenuActive:", this.isMobileMenuActive);
-}
+  }
 
 
 }

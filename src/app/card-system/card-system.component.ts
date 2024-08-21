@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { Checkbox , CheckboxParent} from "./cards/checkbox";
+import { Cursus , School} from "./cards/cursus";
 import { Filter } from './cards/filter-system';
 import { Card } from './cards/card';
 
@@ -16,8 +16,8 @@ import { Card } from './cards/card';
 
 export class CardSystemComponent {
   cardsList!: Card[];
-  checkboxList!: Checkbox[];
-  checkboxParentList!: CheckboxParent[];
+  checkboxList!: Cursus[];
+  checkboxParentList!: School[];
   filter!: Filter;
   searchQuery!:string;
 
@@ -41,17 +41,23 @@ export class CardSystemComponent {
       this.searchQuery = this.filter.searchQuery;
   }
 
-  onToggleParent(parentCheckbox: CheckboxParent){
+  onToggleParent(parentCheckbox: School){
     this.filter.ToggleParent(parentCheckbox);
   }
   
-  onToggleChild(parentCheckbox: CheckboxParent) {
+  onToggleChild(parentCheckbox: School) {
     this.filter.ToggleChild(parentCheckbox);
   }
   onOpenCardModal(card: Card): void {
     this.selectedCard = card;
     this.selectedCard.description = card.description.replace(/\. /g, '.<br>');
-}
+  }
+
+  isMobileMenuActive:boolean = false;
+
+  onToggleMobileMenu() {
+    this.isMobileMenuActive = !this.isMobileMenuActive;
+  }
 
 
 }
