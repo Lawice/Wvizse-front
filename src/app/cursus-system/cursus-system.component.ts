@@ -53,7 +53,17 @@ export class CursusSystemComponent implements OnInit {
         this.filter = new Filter();
         this.cardsList = this.filter.cardsList;
         this.cursusList = this.filter.checkboxList;
-        this.localStorageService.setList('favorites',this.favoriteCards);
+    
+        if (typeof localStorage !== 'undefined' && localStorage !== null) {
+            const favorites = this.localStorageService.getList('favorites');
+            if (favorites.length === 0) {
+                this.localStorageService.setList('favorites', this.favoriteCards);
+            }else{
+                this.favoriteCards = favorites;
+            }
+        } else {
+            console.log('localStorage n\'est pas disponible.');
+        }
     }
   
     groupCursusBySchool() {
@@ -113,19 +123,6 @@ export class CursusSystemComponent implements OnInit {
 
         return years.every(year => !this.selectedCells[`${school}-${cursus}-${year}`]);
     }
-
-
-    onOpenCardModal(card: Card): void {
-        this.selectedCard = card;
-        this.selectedCard.description = card.description.replace(/\. /g, '.<br>');
-        console.log(this.localStorageService.getList('favorites'));
-        if(this.isCardInSavedFavorites(card)){
-            this.FavoriteIcon = 'bi bi-star-fill'
-        }else{
-            this.FavoriteIcon = 'bi bi-star'
-        }
-    }
-
     
     isCardSelected(card: Card) {
         const cursus = this.groupedCursus[card.school].find(c => c.value === card.cursus);
@@ -164,6 +161,17 @@ export class CursusSystemComponent implements OnInit {
             this.selectedCards.push(card);
         } else {
             this.unselectedCards.push(card);
+        }
+    }
+
+    onOpenCardModal(card: Card): void {
+        this.selectedCard = card;
+        this.selectedCard.description = card.description.replace(/\. /g, '.<br>');
+        console.log(this.localStorageService.getList('favorites'));
+        if(this.isCardInSavedFavorites(card)){
+            this.FavoriteIcon = 'bi bi-star-fill'
+        }else{
+            this.FavoriteIcon = 'bi bi-star'
         }
     }
 
