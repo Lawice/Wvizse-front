@@ -13,7 +13,11 @@ a {
 .card-title {
     text-align: center;
     font-size: 1.3rem;
-    margin-bottom: 0px;
+    margin-bottom: 25px;
+    width: 100%;
+    position: relative; 
+    top: 20px;
+    color: rgb(42, 42, 42);
 }
 
 .card-img-fluid {
@@ -27,4 +31,63 @@ a {
 .zoom-card:hover {
     transform: scale(1.1);
     cursor: pointer;
+}
+
+.scroll-rect {
+    height: 600px;
+    width: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+}
+
+.new-container{
+    margin-left: 300px;
+    margin-right: 300px;
+}
+
+td, th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table-fixed{
+    margin-top: 75px;
+}
+
+.filter-title{
+    color:white;
+}
+
+.invisible-button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.star-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 10px;
+    font-size: 24px;
+    color: #ccc;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.star-button:hover {
+    color: gold;
+    transform: scale(1.1);
+}
+
+.star-button:active {
+    color: darkorange;
+    transform: scale(1.2);
+}
+
+.star-button.selected {
+    color: gold;
 }
