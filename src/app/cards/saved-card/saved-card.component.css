@@ -1,0 +1,143 @@
+a {
+    text-decoration: none;
+}
+
+.dropdown-menu .dropdown-item:active, 
+.dropdown-menu .dropdown-item.active {
+    background-color: #d0d0d0;
+    color: #000000;
+}
+
+.custom-checkbox {
+    margin-right: 0.5rem;
+}
+
+.custom-checkbox2 {
+    margin-top: 0.4rem;
+    margin-right: 0.6rem;
+}
+
+.checkbox-title{
+    margin-bottom: 0.6rem;
+    margin-bottom: 0rem;
+}
+
+.zoom-card {
+    transition: transform 0.3s ease;
+}
+
+.zoom-card:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.card-title {
+    font-size: 2rem;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 15px;
+    position: relative; 
+    top: 20px;
+    color: rgb(42, 42, 42);
+}
+
+.search-bar-container {
+    width: 50%;
+}
+
+.main {
+    padding-top: 150px;
+}
+
+@media (max-width: 992px) {
+
+    .card-title {
+        font-size: 2rem;
+    }
+
+    .search-bar-container {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 2000px;
+    }
+
+    .card-title {
+        font-size: 2.25rem;
+    }
+}
+
+@media (min-width: 576px) {
+    .card-title {
+        font-size: 1.5rem;
+    }
+    .card-img-small {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .card-container {
+        width: 90%;
+        margin: 0 auto; /* Centrez le conteneur */
+    }
+
+    .card-img-fluid {
+        height: 100px;
+    }
+
+    .card-title {
+        font-size: 1.3rem;
+        margin-bottom: 45px;
+    }
+
+    .card-img-large {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .card-title {
+        font-size: 1.75rem;
+    }
+}
+
+.invisible-button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.star-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 10px;
+    font-size: 24px;
+    color: #ccc;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.star-button:hover {
+    color: gold;
+    transform: scale(1.1);
+}
+
+.star-button:active {
+    color: darkorange;
+    transform: scale(1.2);
+}
+
+.star-button-selected {
+    color: gold;
+}
+
+.star-button-selected:hover {
+    color: darkgoldenrod;
+}

@@ -3,18 +3,16 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-landing-page',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './landing-page.component.html',
-  styleUrl: './landing-page.component.css'
+    selector: 'app-landing-page',
+    standalone: true,
+    imports: [CommonModule],
+    templateUrl: './landing-page.component.html',
+    styleUrl: './landing-page.component.css'
 })
+
 export class LandingPageComponent {
-  isMobileMenuActive:boolean = false;
-
-  onToggleMobileMenu() {
-    this.isMobileMenuActive = !this.isMobileMenuActive;
-  }
-
-
+    isMobileMenuActive:boolean = false;
+    onToggleMobileMenu() {
+        this.isMobileMenuActive = !this.isMobileMenuActive;
+    }
 }

@@ -1,11 +1,11 @@
-import { Card } from "./card";
-import { Cards } from "./mock-card-list";
+import { JobCard } from "./jobcard";
+import { JobCards } from "./mock-jobcard-list";
 import { Cursus, School } from "./cursus";
 import { CursusList, Schools } from "./cursus-list";
 
 export class Filter{
     searchQuery: string = '';
-    cardsList: Card[] = Cards;
+    cardsList: JobCard[] = JobCards;
     checkboxList : Cursus[] = CursusList;
     checkboxParentList : School [] = Schools;
 
@@ -40,7 +40,7 @@ export class Filter{
     }
 
     ToggleChild(parentCheckbox: School) {
-        const filteredCheckboxes = this.checkboxList.filter(checkbox => checkbox.school ===parentCheckbox.value);
+        const filteredCheckboxes = this.checkboxList.filter(checkbox => checkbox.school === parentCheckbox.value);
         const allChecked = filteredCheckboxes.every(checkbox => checkbox.checked);
         const noneChecked  = filteredCheckboxes.every(checkbox => !checkbox.checked);
         parentCheckbox.checked = allChecked;

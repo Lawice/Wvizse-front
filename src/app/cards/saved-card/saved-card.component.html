@@ -1,0 +1,128 @@
+<header class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+        <a a class="clickable logo d-flex align-items-center me-auto me-xl-0" (click)="onResetFilters()">
+            <h1 class="sitename">WVIZSE</h1>
+        </a>
+
+        <button class="mobile-nav-toggle d-xl-none" (click)="onToggleMobileMenu()">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <nav class="navmenu" [class.active]="isMobileMenuActive">
+            <ul>
+                <li><a href="">Home</a></li>
+                <li><a href="jobs">Métiers</a></li>
+                <li><a href="cursus">Cursus</a></li>
+                <li><a href="chosen-jobs"class="active">Métiers Choisis</a></li>
+                <li><a href="">Compétences</a></li>
+                <li class="dropdown"><a class="clickable toggle-dropdown" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Filière :<i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                        <li class="dropdown-item">
+                            <label class="form-check-label h4 checkbox-title">
+                                <input type="checkbox" class="form-check-input custom-checkbox2 h5" [(ngModel)]="checkboxParentList[0].checked" (change)="onToggleParent(checkboxParentList[0])" [attr.data-filter]="checkboxParentList[0].value" [indeterminate]="checkboxParentList[0].indeterminate">
+                                {{ checkboxParentList[0].value }} :
+                            </label>
+                        </li>
+                        <ng-container *ngFor="let checkbox of checkboxList">
+                            <ng-container *ngIf="checkbox.school === 'La Horde'">
+                                <li class="dropdown-item">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input custom-checkbox" [(ngModel)]="checkbox.checked" (change)="onToggleChild(checkboxParentList[0])" [attr.data-filter]="checkbox.value">
+                                        {{ checkbox.value }}
+                                    </label>
+                                </li>
+                            </ng-container>
+                        </ng-container>
+                        <li><hr></li>
+                        <li class="dropdown-item">
+                            <label class="form-check-label h4 checkbox-title">
+                                <input type="checkbox" class="form-check-input custom-checkbox2 h5" [(ngModel)]="checkboxParentList[1].checked" (change)="onToggleParent(checkboxParentList[1])" [attr.data-filter]="checkboxParentList[1].value" [indeterminate]="checkboxParentList[1].indeterminate">
+                                {{ checkboxParentList[1].value }} :
+                            </label>
+                        </li>
+                        <ng-container *ngFor="let checkbox of checkboxList">
+                            <ng-container *ngIf="checkbox.school === 'Turing'">
+                                <li class="dropdown-item">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input custom-checkbox" [(ngModel)]="checkbox.checked" (change)="onToggleChild(checkboxParentList[1])" [attr.data-filter]="checkbox.value">
+                                        {{ checkbox.value }}
+                                    </label>
+                                </li>
+                            </ng-container>
+                        </ng-container>
+                    </ul>
+                </li>
+                <form class="d-flex px-2 search-bar-container" role="search" (input)="onApplyFilters()">
+                    <input class="form-control me-2 flex-grow-1" type="search" [(ngModel)]="searchQuery" name="searchQuery" placeholder="Rechercher" aria-label="Search">
+                </form>
+            </ul>
+
+        </nav>
+
+        <div class="header-social-links">
+        </div>
+    </div>
+</header>
+
+<!-- Modal -->
+<div class="modal fade rounded-5" id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="cardModalLabel">{{ selectedCard?.name }}</h4>
+                <button type="button" class = "invisible-button" (click)="onToggleFavoriteCards(selectedCard)">
+                    <i [ngClass]="getFavoriteClasses()" class="star-button"></i>
+                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 	col-lg-6">
+                        <img [src]="selectedCard?.picture" class="img-fluid mb-3 rounded-5">
+                    </div>
+                    <div class="col-12 	col-lg-6">
+                        <h6>Description :</h6>
+                        <p [innerHTML]="selectedCard?.description"></p>
+                        <ng-container *ngIf="selectedCard?.skills?.length !== 0">
+                            <hr>
+                            <div class="section2">
+                                <h6>Compétences requise :</h6>
+                                <ul>                
+                                    <ng-container *ngFor="let skill of selectedCard?.skills">
+                                    <li>{{skill}}</li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                        </ng-container>
+                        <hr>
+                        <div class="text-center">
+                            <button class="btn btn-danger" (click)="onCursusNavigation()" role="button" data-bs-dismiss="modal">Voir le cursus pour ce métiers</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--JobCards-->
+<section class="main dark-background">
+    <div class="container px-0">
+        <div class="row gx-5">
+            <ng-container *ngFor="let card of favoriteCards">
+                <ng-container *ngIf="card.visible">
+                    <div class="col-6 col-md-4 col-lg-3 col-xl-2 mb-5 card-container" [attr.sector]="card.school" [attr.cursus]="card.cursus" [attr.job-tags]="card.tags">
+                        <a class="card-linker" data-bs-toggle="modal" data-bs-target="#cardModal"  (click)="onOpenCardModal(card)">
+                            <div class="card border-0 rounded-5 shadow zoom-card">
+                                <img [src]="card.picture" class="card-img-fluid rounded-5 shadow card-img-large">
+                                <img [src]="card.pictureSmall" class="card-img-fluid rounded-5 shadow card-img-small">
+                                <div class="card-img-overlay d-flex align-items-end p-3">
+                                    <h1 class="card-title text-center">{{card.name}}</h1>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+</section>
