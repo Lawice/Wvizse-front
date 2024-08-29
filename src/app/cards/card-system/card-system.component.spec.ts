@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LandingPageComponent } from './landing-page.component';
+import { CardSystemComponent } from './jobcard-system.component';
 
-describe('LandingPageComponent', () => {
-    let component: LandingPageComponent;
-    let fixture: ComponentFixture<LandingPageComponent>;
+describe('CardSystemComponent', () => {
+    let component: CardSystemComponent;
+    let fixture: ComponentFixture<CardSystemComponent>;
   
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [LandingPageComponent]
+            imports: [CardSystemComponent]
         })
         .compileComponents();
   
-        fixture = TestBed.createComponent(LandingPageComponent);
+        fixture = TestBed.createComponent(CardSystemComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

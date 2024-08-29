@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LandingPageComponent } from './landing-page.component';
+import { SavedCardComponent } from './saved-card.component';
 
-describe('LandingPageComponent', () => {
-    let component: LandingPageComponent;
-    let fixture: ComponentFixture<LandingPageComponent>;
+describe('SavedCardComponent', () => {
+    let component: SavedCardComponent;
+    let fixture: ComponentFixture<SavedCardComponent>;
   
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [LandingPageComponent]
+            imports: [SavedCardComponent]
         })
         .compileComponents();
   
-        fixture = TestBed.createComponent(LandingPageComponent);
+        fixture = TestBed.createComponent(SavedCardComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

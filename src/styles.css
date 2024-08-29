@@ -63,6 +63,10 @@ footer {
     font-weight: 700;
     color: var(--heading-color);
 }
+
+.header .logo h1:hover {
+    color: var(--hover-color);
+}
   
 .header .header-social-links {
     padding-right: 15px;
@@ -84,7 +88,9 @@ footer {
     line-height: 0px;
 }
 
-
+.dropdown-item label:hover{
+    color: var(--hover-color);
+}
 
 
 @media (max-width: 1200px) {
@@ -240,13 +246,22 @@ footer {
     
     .navmenu.active {
         display: block;
+        color : var(--default-color);
     }
 
+    .navmenu.active a {
+        color : var(--default-color);
+    }
 
+    .navmenu.active a:hover {
+        color : var(--hover-color);
+    }
+    
     .navmenu ul {
         padding-top: 5;
         list-style: none;
         align-items: center;
     }
     
+
 }

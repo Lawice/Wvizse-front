@@ -134,6 +134,10 @@ a {
     transform: scale(1.2);
 }
 
-.star-button.selected {
+.star-button-selected {
     color: gold;
+}
+
+.star-button-selected:hover {
+    color: darkgoldenrod;
 }

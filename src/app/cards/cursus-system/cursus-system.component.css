@@ -10,13 +10,30 @@ a {
     background-color: rgb(0, 250, 0);
 }
 
+.case-clickable{
+    transition: background-color 0.3s ease;
+}
+
+.case-clickable:hover{
+    background-color: gray;
+    cursor: pointer;
+}
+
+.selected {
+    background-color: rgb(0, 250, 0);
+    transition: background-color 0.3s ease;
+}
+
+.selected:hover {
+    background-color: rgb(63, 189, 63);
+}
+
 .card-title {
     text-align: center;
+    vertical-align: middle;
     font-size: 1.3rem;
-    margin-bottom: 25px;
     width: 100%;
     position: relative; 
-    top: 20px;
     color: rgb(42, 42, 42);
 }
 
@@ -35,15 +52,15 @@ a {
 
 .scroll-rect {
     height: 600px;
-    width: 350px;
+    width: 400px;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 10px;
 }
 
 .new-container{
-    margin-left: 300px;
-    margin-right: 300px;
+    margin-left: 275px;
+    margin-right: 275px;
 }
 
 td, th {
@@ -88,6 +105,10 @@ td, th {
     transform: scale(1.2);
 }
 
-.star-button.selected {
+.star-button-selected {
     color: gold;
+}
+
+.star-button-selected:hover {
+    color: darkgoldenrod;
 }
