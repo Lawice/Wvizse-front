@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 import { Cursus , School} from "../cursus";
-import { Filter } from '../filter-system';
+import { CardFilter } from '../filter-card-system';
 import { Save } from '../save';
 import { JobCard } from '../jobcard';
 
 import { LocalStorageService } from '../../local-storage.service';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-saved-card',
@@ -22,7 +24,7 @@ export class SavedCardComponent {
     cardsList!: JobCard[];
     checkboxList!: Cursus[];
     checkboxParentList!: School[];
-    filter!: Filter;
+    filter!: CardFilter;
     save!: Save;
     searchQuery!:string;
   
@@ -33,15 +35,23 @@ export class SavedCardComponent {
     favoriteCards!:JobCard[];
   
     ngOnInit(): void {
-        this.filter = new Filter();
+        this.filter = new CardFilter();
         this.searchQuery = this.filter.searchQuery;
         this.cardsList = this.filter.cardsList;
         this.checkboxList = this.filter.checkboxList;
         this.checkboxParentList = this.filter.checkboxParentList;
         this.favoriteCards = this.save.getSavedFavorites();
+
+        this.route.data.subscribe(data =>{
+            this.titleService.setTitle(data['title'] || 'Wvizse');
+        });
     }
   
-    constructor(private router: Router) {
+    constructor(
+        private router: Router,
+        private titleService: Title,
+        private route: ActivatedRoute
+    ) {
         this.save = new Save(new LocalStorageService());
     }
   
@@ -87,7 +97,13 @@ export class SavedCardComponent {
   
     onOpenCardModal(card:JobCard){
         const [selectedCard , favoriteIcon ]= this.save.openCardModal(card,this.favoriteIcon, this.selectedCard);
-        this.selectedCard=selectedCard;
+        const overrideCard = this.cardsList.find(card => card.name === selectedCard.name);
+        if(overrideCard){
+            this.selectedCard=overrideCard;
+        }
+        else{
+            this.selectedCard=selectedCard;
+        }
         this.favoriteIcon=favoriteIcon;
     }
   
@@ -111,6 +127,11 @@ export class SavedCardComponent {
     }
 
     onCursusNavigation(){
-        this.router.navigate(['cursus'],{queryParams:{school:this.selectedCard?.school, cursus:this.selectedCard?.cursus}});
+        this.router.navigate(['/cursus'],{queryParams:{job:this.selectedCard?.name}});
+    }
+
+    
+    onOpenSkillModal(skillName:string){
+        this.router.navigate(['/skills'],{queryParams:{skill:skillName}});
     }
 }

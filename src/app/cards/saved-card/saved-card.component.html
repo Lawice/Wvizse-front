@@ -14,7 +14,7 @@
                 <li><a href="jobs">Métiers</a></li>
                 <li><a href="cursus">Cursus</a></li>
                 <li><a href="chosen-jobs"class="active">Métiers Choisis</a></li>
-                <li><a href="">Compétences</a></li>
+                <li><a href="skills">Compétences</a></li>
                 <li class="dropdown"><a class="clickable toggle-dropdown" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Filière :<i class="bi bi-chevron-down toggle-dropdown"></i></a>
                     <ul>
                         <li class="dropdown-item">
@@ -89,21 +89,22 @@
                                 <h6>Compétences requise :</h6>
                                 <ul>                
                                     <ng-container *ngFor="let skill of selectedCard?.skills">
-                                    <li>{{skill}}</li>
+                                    <li><a class="clickable2" (click)="onOpenSkillModal(skill)" data-bs-dismiss="modal">{{skill}}</a> </li>
                                     </ng-container>
                                 </ul>
                             </div>
+                            <hr>
+                            <div class="text-center">
+                                <button class="btn btn-danger" (click)="onCursusNavigation()" role="button" data-bs-dismiss="modal">Voir le cursus pour ce métiers</button>
+                            </div>
                         </ng-container>
-                        <hr>
-                        <div class="text-center">
-                            <button class="btn btn-danger" (click)="onCursusNavigation()" role="button" data-bs-dismiss="modal">Voir le cursus pour ce métiers</button>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <!--JobCards-->
 <section class="main dark-background">
     <div class="container px-0">

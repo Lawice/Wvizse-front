@@ -1,0 +1,41 @@
+.zoom-card {
+    transition: transform 0.3s ease;
+}
+
+.zoom-card:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.main {
+    padding-top: 150px;
+}
+
+.card-title {
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.card-img-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.inline-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 5px; 
+}
+  
+.inline-list li::after {
+    content: "/";
+    padding-left: 5px;
+}
+  
+.inline-list li:last-child::after {
+    content: ""; 
+}

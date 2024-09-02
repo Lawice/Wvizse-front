@@ -8,7 +8,9 @@ export const Skills : Skill[] = [
         cursus:Course.PROG,
         year: DiplomeYear.B1,
         school: Faculty.HORDE,
-        description:""
+        description:"",
+        picture:"images/test_prog.png",
+        pictureSmall:"images/test_prog2.png"
     },
     {
         id:2,
@@ -16,7 +18,9 @@ export const Skills : Skill[] = [
         cursus:Course.PROG,
         year: DiplomeYear.B2,
         school: Faculty.HORDE,
-        description:""
+        description:"",
+        picture:"images/test_prog.png",
+        pictureSmall:"images/test_prog2.png"
     },
     {
         id:3,
@@ -24,7 +28,9 @@ export const Skills : Skill[] = [
         cursus:Course.PROG,
         year: DiplomeYear.B3,
         school: Faculty.HORDE,
-        description:""
+        description:"",
+        picture:"images/test_prog.png",
+        pictureSmall:"images/test_prog2.png"
     },
     {
         id:4,
@@ -32,7 +38,9 @@ export const Skills : Skill[] = [
         cursus:Course.PROG,
         year: DiplomeYear.M1,
         school: Faculty.HORDE,
-        description:""
+        description:"",
+        picture:"images/test_prog.png",
+        pictureSmall:"images/test_prog2.png"
     },
     {
         id:5,
@@ -40,7 +48,9 @@ export const Skills : Skill[] = [
         cursus:Course.PROG,
         year: DiplomeYear.M2,
         school: Faculty.HORDE,
-        description:""
+        description:"",
+        picture:"images/test_prog.png",
+        pictureSmall:"images/test_prog2.png"
     },
     {
         id:6,
@@ -48,7 +58,9 @@ export const Skills : Skill[] = [
         cursus:Course.ART,
         year: DiplomeYear.B2,
         school: Faculty.HORDE,
-        description:""
+        description:"",
+        picture:"images/test_art.png",
+        pictureSmall:"images/test_art2.png"
     },
     {
         id:7,
@@ -56,7 +68,9 @@ export const Skills : Skill[] = [
         cursus:Course.ART,
         year: DiplomeYear.M1,
         school: Faculty.HORDE,
-        description:""
+        description:"",
+        picture:"images/test_art.png",
+        pictureSmall:"images/test_art2.png"
     },
     {
         id:8,
@@ -64,7 +78,9 @@ export const Skills : Skill[] = [
         cursus:Course.ART,
         year: DiplomeYear.M2,
         school: Faculty.HORDE,
-        description:""
+        description:"",
+        picture:"images/test_art.png",
+        pictureSmall:"images/test_art2.png"
     },
     {
         id:9,
@@ -72,7 +88,9 @@ export const Skills : Skill[] = [
         cursus:Course.GD,
         year: DiplomeYear.M1,
         school: Faculty.HORDE,
-        description:""
+        description:"",
+        picture:"images/test_gd.png",
+        pictureSmall:"images/test_gd2.png"
     },
     {
         id:10,
@@ -80,7 +98,9 @@ export const Skills : Skill[] = [
         cursus:Course.GD,
         year: DiplomeYear.M2,
         school: Faculty.HORDE,
-        description:""
+        description:"",
+        picture:"images/test_gd.png",
+        pictureSmall:"images/test_gd2.png"
     }
     
 ]

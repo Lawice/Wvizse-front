@@ -7,6 +7,8 @@ export class Skill {
     year !: DiplomeYear;
     school !: Faculty;
     description !: string;
+    picture:  string;
+    pictureSmall: string;
 }
 
 export class SkillFamily{

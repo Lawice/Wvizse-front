@@ -3,7 +3,7 @@ import { JobCards } from "./mock-jobcard-list";
 import { Cursus, School } from "./cursus";
 import { CursusList, Schools } from "./cursus-list";
 
-export class Filter{
+export class CardFilter{
     searchQuery: string = '';
     cardsList: JobCard[] = JobCards;
     checkboxList : Cursus[] = CursusList;

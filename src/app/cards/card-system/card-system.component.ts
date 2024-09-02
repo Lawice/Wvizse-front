@@ -1,14 +1,21 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit,Inject } from '@angular/core';
+import { CommonModule,DOCUMENT } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
+import { Router,ActivatedRoute } from '@angular/router';
 
 import { Cursus , School} from "../cursus";
-import { Filter } from '../filter-system';
+import { CardFilter } from '../filter-card-system';
 import { Save } from '../save';
 import { JobCard } from '../jobcard';
-import { Router } from '@angular/router';
 
 import { LocalStorageService } from '../../local-storage.service';
+
+declare global {
+    interface Window {
+        bootstrap: any;
+    }
+}
 
 @Component({
     selector: 'app-card-system',
@@ -18,11 +25,11 @@ import { LocalStorageService } from '../../local-storage.service';
     styleUrl: './card-system.component.css'
 })
   
-export class CardSystemComponent {
+export class CardSystemComponent  implements OnInit {
     cardsList!: JobCard[];
     checkboxList!: Cursus[];
     checkboxParentList!: School[];
-    filter!: Filter;
+    filter!: CardFilter;
     save!: Save;
     searchQuery!:string;
   
@@ -31,14 +38,28 @@ export class CardSystemComponent {
     favoriteIcon = 'bi bi-star';
   
     ngOnInit(): void {
-        this.filter = new Filter();
+        this.filter = new CardFilter();
         this.searchQuery = this.filter.searchQuery;
         this.cardsList = this.filter.cardsList;
         this.checkboxList = this.filter.checkboxList;
         this.checkboxParentList = this.filter.checkboxParentList;
+
+        this.route.queryParams.subscribe(params=>{
+            const name = params['job'];
+            if (name) {
+                this.openCardModal(name);
+            }
+        });
+        this.route.data.subscribe(data =>{
+            this.titleService.setTitle(data['title'] || 'Wvizse');
+        });
     }
   
-    constructor(private router: Router) {
+    constructor(
+        private titleService: Title,
+        private router: Router,
+        private route:ActivatedRoute,
+        @Inject(DOCUMENT) private document: Document) {
       this.save = new Save(new LocalStorageService());
     }
   
@@ -89,6 +110,25 @@ export class CardSystemComponent {
 
     onCursusNavigation(){
         this.router.navigate(['/cursus'],{queryParams:{job:this.selectedCard?.name}});
+    }
+
+    onOpenSkillModal(skillName:string){
+        this.router.navigate(['/skills'],{queryParams:{skill:skillName}});
+    }
+
+    openCardModal(jobName: string){
+        const card = this.cardsList.find(card => card.name === jobName);
+        if(card){
+            this.onOpenCardModal(card);
+            
+        }
+
+        const modalElement = this.document.getElementById('cardModal');
+        if (modalElement) {
+            const modalInstance = new window.bootstrap.Modal(modalElement);
+            modalInstance.show();
+        }
+
     }
 }
   

@@ -1,0 +1,91 @@
+<header class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+        <a class="clickable logo d-flex align-items-center me-auto me-xl-0" (click)="onResetFilters()">
+            <h1 class="sitename">WVIZSE</h1>
+        </a>
+
+        <button class="mobile-nav-toggle d-xl-none" (click)="onToggleMobileMenu()">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <nav class="navmenu" [class.active]="isMobileMenuActive">
+            <ul>
+                <li><a href="">Home</a></li>
+                <li><a href="jobs">Métiers</a></li>
+                <li><a href="cursus">Cursus</a></li>
+                <li><a href="chosen-jobs">Métiers Choisis</a></li>
+                <li><a href="skills" class="active">Compétences</a></li>
+                <form class="d-flex px-2 search-bar-container" role="search" (input)="onApplyFilter()">
+                    <input class="form-control me-2 flex-grow-1" type="search" [(ngModel)]="searchQuery" name="searchQuery" placeholder="Rechercher" aria-label="Search">
+                </form>
+             </ul>
+        </nav>
+
+        <div class="header-social-links">
+        </div>
+    </div>
+</header>
+
+<!-- Modal -->
+<div class="modal fade rounded-5" id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="cardModalLabel">{{ selectedSkill?.name }}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 	col-lg-6">
+                        <img [src]="selectedSkill?.picture" class="img-fluid mb-3 rounded-5">
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <h6>Description :</h6>
+                        <p [innerHTML]="selectedSkill?.description"></p>
+                    </div>
+                    <div *ngFor="let seasonEntry of selectedSkill?.season | keyvalue">
+                        <hr>
+                        <h3>Filière : {{ seasonEntry.key }}</h3>
+                        <ul class="inline-list">
+                            <li *ngFor="let year of seasonEntry.value">
+                                {{ year }}
+                            </li>
+                        </ul>
+                        <ng-container *ngIf="selectedSkill">
+                            <div *ngIf="onFilterCard(selectedSkill.name, seasonEntry.key, jobCardList).length > 0">
+                                <h4>Métiers associés :</h4>
+                                <ul class="inline-list">
+                                    <li *ngFor="let jobCard of onFilterCard(selectedSkill.name, seasonEntry.key, jobCardList)">
+                                        <a class="clickable2" (click)="onOpenJobModal(jobCard.name)" data-bs-dismiss="modal"> {{ jobCard.name }}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--JobCards-->
+<section class="main dark-background">
+    <div class="container px-0">
+        <div class="row gx-5">
+            <ng-container *ngFor="let skill of groupedSkillList">
+                <ng-container *ngIf="skill.isVisible">
+                    <div class="col-6 col-md-4 col-lg-3 col-xl-3 mb-5 card-container">
+                        <a class="card-linker" data-bs-toggle="modal" data-bs-target="#cardModal" (click)="onOpenSkillModal(skill)">
+                            <div class="card border-0 rounded-5 shadow zoom-card">
+                                <img [src]="skill.pictureSmall" class="card-img-fluid rounded-5 shadow card-img-small">
+                                <div class="card-img-overlay d-flex justify-content-center align-items-center">
+                                    <h1 class="card-title text-center">{{skill.name}}</h1>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+</section>

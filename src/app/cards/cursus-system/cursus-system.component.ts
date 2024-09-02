@@ -1,20 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-
-import { LocalStorageService } from '../../local-storage.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 import { Cursus,School } from '../cursus';
 import { JobCard } from '../jobcard';
-import { Filter } from '../filter-system';
+import { CardFilter } from '../filter-card-system';
 import { Save } from '../save';
-
 import { Diplome, DiplomeYear } from "../enum";
-
 import { Skills, SkillFamilies  } from '../mock-skill-list';
 import { Skill, SkillFamily } from '../skill';
 
+import { LocalStorageService } from '../../local-storage.service';
 
 @Component({
     selector: 'app-cursus-system',
@@ -27,7 +25,7 @@ import { Skill, SkillFamily } from '../skill';
 export class CursusSystemComponent implements OnInit {
     isMobileMenuActive:boolean = false;
 
-    filter!: Filter;
+    filter!: CardFilter;
     save!: Save;
 
     cardsList!: JobCard[];
@@ -70,14 +68,21 @@ export class CursusSystemComponent implements OnInit {
                 this.JobSelection(job);
             }
         });
+        this.route.data.subscribe(data =>{
+            this.titleService.setTitle(data['title'] || 'Wvizse');
+        });
     }
  
     onToggleMobileMenu() {
         this.isMobileMenuActive = !this.isMobileMenuActive;
     }
  
-    constructor(private route:ActivatedRoute) {
-        this.filter = new Filter();
+    constructor(
+        private titleService: Title,
+        private route:ActivatedRoute, 
+        private router: Router
+        ) {
+        this.filter = new CardFilter();
 
         this.cardsList = this.filter.cardsList;
         this.cursusList = this.filter.checkboxList;
@@ -160,48 +165,71 @@ export class CursusSystemComponent implements OnInit {
     }
 
     isCardSelected(card: JobCard) {
-        const cardSkill : Skill[] = [];
-        const cardSkillParent: Skill[] = [];
-        let allSelected = true;
-        card.skills.forEach(skillName => {
-            const newskills = this.skillList.filter(skill => 
-                skill.name === skillName &&
-                skill.cursus === card.cursus &&
-                skill.school === card.school
-            );
+        if(card){
+            const cardSkill : Skill[] = [];
+            const cardSkillParent: Skill[] = [];
+            let allSelected = true;
+            card.skills.forEach(skillName => {
+                const newskills = this.skillList.filter(skill => 
+                    skill.name === skillName &&
+                    skill.cursus === card.cursus &&
+                    skill.school === card.school
+                );
+        
+                if (newskills.length > 0) {
+                    newskills.forEach(skill => {
+                        cardSkill.push(skill);
     
-            if (newskills.length > 0) {
-                newskills.forEach(skill => {
-                    cardSkill.push(skill);
-
-                });
-            } else {
-                allSelected = false;
-            }
-        });
-
-        if(cardSkill.length > 0){
-            const pastYears = new Set<DiplomeYear>();
-            cardSkill.forEach(skill => {
-                if (!pastYears.has(skill.year)) {
-                    let result = false;
-                    let parentResult = false;
-
-                    result = this.SkillVerification(skill);
-                    parentResult = this.ParentSkillVerification(skill,cardSkill);
-
-                    if(!(result && parentResult)){
-                        allSelected = false;
-                    }
-                    pastYears.add(skill.year);
+                    });
+                } else {
+                    allSelected = false;
                 }
             });
-            this.UpdateCardSelection(card, allSelected)
+    
+            if(cardSkill.length > 0){
+                const pastYears = new Set<DiplomeYear>();
+                cardSkill.forEach(skill => {
+                    if (!pastYears.has(skill.year)) {
+                        let result = false;
+                        let parentResult = false;
+    
+                        result = this.SkillVerification(skill);
+                        parentResult = this.ParentSkillVerification(skill,cardSkill);
+    
+                        if(!(result && parentResult)){
+                            allSelected = false;
+                        }
+                        pastYears.add(skill.year);
+                    }
+                });
+                this.UpdateCardSelection(card, allSelected)
+            }
+            else {
+                allSelected = false;
+                this.UpdateCardSelection(card, allSelected)
+            }
         }
-        else {
-            allSelected = false;
-            this.UpdateCardSelection(card, allSelected)
-        }
+    }
+
+
+    ToggleAll(selected:boolean){
+        Object.keys(this.groupedCursus).forEach(school => {
+            this.groupedCursus[school].forEach(cursusObj => {
+                const cursus = cursusObj.value;
+                const rowKey = `${school}-${cursus}`;
+    
+                const years = cursusObj.diplome === this.bachelor ? [1, 2, 3]
+                    : cursusObj.diplome === this.master ? [4, 5]
+                    : [1, 2, 3, 4, 5];
+        
+                years.forEach(year => {
+                    this.selectedCells[`${school}-${cursus}-${year}`] = selected;
+                });
+
+                this.selectedRows[rowKey] = { isAllSelected: selected, rowDiplome: cursusObj.diplome };
+            });
+        });
+        this.cardsList.forEach(card => this.isCardSelected(card));
     }
 
     SkillVerification(skill:Skill): boolean{
@@ -262,6 +290,40 @@ export class CursusSystemComponent implements OnInit {
     }
 
     JobSelection(cardname:string){
+        const card: JobCard|undefined = this.cardsList.find(newcard => newcard.name === cardname);
+        const cardSkill : Skill[] = [];
+        if(card){
+            card.skills.forEach(skillName => {
+                const newskills = this.skillList.filter(skill => 
+                    skill.name === skillName &&
+                    skill.cursus === card.cursus &&
+                    skill.school === card.school
+                );
+        
+                if (newskills.length > 0) {
+                    newskills.forEach(skill => {
+                        cardSkill.push(skill);
+                    });
+                } 
+            });
+    
+            if(cardSkill.length > 0){
+                const pastYears = new Set<DiplomeYear>();
+                cardSkill.forEach(skill => {
+                    if (!pastYears.has(skill.year)) {
+
+                        this.SkillSelection(skill);
+                        this.ParentSkillSelection(skill,cardSkill);
+
+                        pastYears.add(skill.year);
+                    }
+                })
+            }
+        }
+    }
+
+    onJobSelection(cardname:string|undefined){
+        this.ToggleAll(false);
         const card: JobCard|undefined = this.cardsList.find(newcard => newcard.name === cardname);
         const cardSkill : Skill[] = [];
         if(card){
@@ -389,6 +451,10 @@ export class CursusSystemComponent implements OnInit {
         return this.favoriteIcon === 'bi bi-star-fill';
     }
     //#endregion
+
+    onOpenSkillModal(skillName:string){
+        this.router.navigate(['/skills'],{queryParams:{skill:skillName}});
+    }
 }
 
 class Row{

@@ -1,6 +1,6 @@
  <header class="header d-flex align-items-center fixed-top">
     <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
-        <a href="" class="logo d-flex align-items-center me-auto me-xl-0">
+        <a class="logo d-flex align-items-center me-auto me-xl-0" (click)="onResetFilters()">
             <h1 class="sitename">WVIZSE</h1>
         </a>
 
@@ -14,7 +14,7 @@
                 <li><a href="jobs">Métiers</a></li>
                 <li><a href="cursus" class="active">Cursus</a></li>
                 <li><a href="chosen-jobs">Métiers Choisis</a></li>
-                <li><a href="">Compétences</a></li>
+                <li><a href="skills">Compétences</a></li>
                 <li class="dropdown"><a class="clickable toggle-dropdown" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Filière :<i class="bi bi-chevron-down toggle-dropdown"></i></a>
                     <ul>
                         <li class="dropdown-item">
@@ -87,10 +87,18 @@
                                 <h6>Compétences requise :</h6>
                                 <ul>                
                                     <ng-container *ngFor="let skill of selectedCard?.skills">
-                                    <li>{{skill}}</li>
+                                        <li><a class="clickable2" (click)="onOpenSkillModal(skill)" data-bs-dismiss="modal">{{skill}}</a> </li>
                                     </ng-container>
                                 </ul>
                             </div>
+                            <ng-container *ngIf="selectedCard">
+                                <ng-container *ngIf="unselectedCards.includes(selectedCard)">
+                                    <hr>
+                                    <div class="text-center">
+                                        <button class="btn btn-danger" (click)="onJobSelection(selectedCard.name)" role="button" data-bs-dismiss="modal">Voir le cursus pour ce métiers</button>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
                         </ng-container>
                     </div>
                 </div>
@@ -170,8 +178,8 @@
                                     <a class="card-linker" data-bs-toggle="modal" data-bs-target="#cardModal" (click)="onOpenCardModal(card)">
                                         <div class="card border-0 rounded-5 shadow zoom-card">
                                             <img [src]="card.pictureSmall" class="card-img-fluid rounded-5 shadow">
-                                            <div class="card-img-overlay d-flex align-items-end p-3">
-                                                <h5 class="card-title text-center"> {{card.name}} </h5>
+                                            <div class="card-img-overlay d-flex justify-content-center align-items-center">
+                                                <h1 class="card-title text-center">{{card.name}}</h1>
                                             </div>
                                         </div>
                                     </a>
@@ -187,8 +195,8 @@
                                     <a class="card-linker" data-bs-toggle="modal" data-bs-target="#cardModal" (click)="onOpenCardModal(card)">
                                         <div class="card border-0 rounded-5 shadow zoom-card">
                                             <img [src]="card.pictureSmall" class="card-img-fluid rounded-5 shadow">
-                                            <div class="card-img-overlay d-flex align-items-end p-3">
-                                                <h5 class="card-title text-center"> {{card.name}} </h5>
+                                            <div class="card-img-overlay d-flex justify-content-center align-items-center">
+                                                <h1 class="card-title text-center">{{card.name}}</h1>
                                             </div>
                                         </div>
                                     </a>
