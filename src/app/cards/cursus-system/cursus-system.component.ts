@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,6 +13,8 @@ import { Skills, SkillFamilies  } from '../mock-skill-list';
 import { Skill, SkillFamily } from '../skill';
 
 import { LocalStorageService } from '../../local-storage.service';
+
+import cytoscape from 'cytoscape';
 
 @Component({
     selector: 'app-cursus-system',
@@ -56,9 +58,15 @@ export class CursusSystemComponent implements OnInit {
     skillList !: Skill[];
     skillFamilyList !: SkillFamily[];
 
+    @ViewChild('cyto', { static: true }) cyContainer!: ElementRef;
+  
+    cyto!: cytoscape.Core;
+
+
     ngOnInit(): void {
         this.GroupCursusBySchool();
         this.cardsList.forEach(card=> this.isCardSelected(card));
+        this.initializeCytoscape();
         this.save = new Save(new LocalStorageService());
 
         this.route.queryParams.subscribe(params=>{
@@ -111,8 +119,17 @@ export class CursusSystemComponent implements OnInit {
         }
     }
 
-    onToggleSelection(school: string, cursus: string, year: number) {
-        const key = `${school}-${cursus}-${year}`;
+    onToggleSelection(school: string, cursusName: string, year: number) {
+        const key = `${school}-${cursusName}-${year}`;
+        console.log(key);
+        this.selectedCells[key] = !this.selectedCells[key];
+        this.cardsList.forEach(card=> this.isCardSelected(card));
+
+        this.TriggerNodeOnSelecteion(school, cursusName, year)
+    }
+    ToggleSelection(school: string, cursusName: string, year: number) {
+        const key = `${school}-${cursusName}-${year}`;
+        console.log(key);
         this.selectedCells[key] = !this.selectedCells[key];
         this.cardsList.forEach(card=> this.isCardSelected(card));
     }
@@ -122,19 +139,45 @@ export class CursusSystemComponent implements OnInit {
         return !!this.selectedCells[key];
     }
 
-    onToggleRowSelection(school: string, cursus: string) {
-        const rowKey = `${school}-${cursus}`;
-        const allDeselected = this.areAllCellsDeselected(school, cursus);
+    TriggerNodeOnSelecteion(school: string, cursusName: string, year: number){
+        const newCursus = this.cursusList.find(cursus => 
+            cursus.value === cursusName &&
+            cursus.school === school
+        );
+
+        let nodeId : string="";
+        switch(newCursus?.diplome){
+            case  Diplome.B:
+                nodeId = `b${year - 1}-${cursusName}`;
+                break;
+            case  Diplome.BM:
+                nodeId = `bm${year - 1}-${cursusName}`;
+                break;
+            case  Diplome.PM:
+                nodeId = `pm${year - 1}-${cursusName}`;
+                break;
+            case  Diplome.M:
+                nodeId = `m${year - 3}-${cursusName}`;
+                break;
+        }
+        this.triggerTapOnNode(nodeId);
+    }
+
+    onToggleRowSelection(school: string, cursusName: string) {
+        const rowKey = `${school}-${cursusName}`;
+        const allDeselected = this.areAllCellsDeselected(school, cursusName);
         const newRowSelectionState = allDeselected;
     
-        const cursusObj = this.groupedCursus[school].find(c => c.value === cursus);
+        const cursusObj = this.groupedCursus[school].find(c => c.value === cursusName);
         if (cursusObj) {
             const years = cursusObj.diplome === this.bachelor ? [1, 2, 3]
                 : cursusObj.diplome === this.master ? [4, 5]
                 : [1, 2, 3, 4, 5];
     
             years.forEach(year => {
-                this.selectedCells[`${school}-${cursus}-${year}`] = newRowSelectionState;
+                this.selectedCells[`${school}-${cursusName}-${year}`] = newRowSelectionState;
+
+                this.TriggerNodeOnSelecteion(school, cursusName, year)
             });
     
             this.selectedRows[rowKey] = { isAllSelected: newRowSelectionState, rowDiplome: cursusObj.diplome };
@@ -142,26 +185,26 @@ export class CursusSystemComponent implements OnInit {
         this.cardsList.forEach(card=> this.isCardSelected(card));
     }
 
-    areAllCellsDeselected(school: string, cursus: string): boolean {
-        const cursusObj = this.groupedCursus[school].find(c => c.value === cursus);
+    areAllCellsDeselected(school: string, cursusName: string): boolean {
+        const cursusObj = this.groupedCursus[school].find(c => c.value === cursusName);
         if (!cursusObj) return true;
 
         const years = cursusObj.diplome === this.bachelor ? [1, 2, 3]
             : cursusObj.diplome === this.master ? [4, 5]
             : [1, 2, 3, 4, 5];
 
-        return years.every(year => !this.selectedCells[`${school}-${cursus}-${year}`]);
+        return years.every(year => !this.selectedCells[`${school}-${cursusName}-${year}`]);
     }
 
-    areAllCellsSelected(school: string, cursus: string): boolean {
-        const cursusObj = this.groupedCursus[school].find(c => c.value === cursus);
+    areAllCellsSelected(school: string, cursusName: string): boolean {
+        const cursusObj = this.groupedCursus[school].find(c => c.value === cursusName);
         if(!cursusObj) return false;
 
         const years = cursusObj.diplome === this.bachelor ? [1,2,3]
             : cursusObj.diplome === this.master ? [4,5]
             : [1, 2, 3, 4, 5];
 
-            return years.every(year => this.selectedCells[`${school}-${cursus}-${year}`]);
+            return years.every(year => this.selectedCells[`${school}-${cursusName}-${year}`]);
     }
 
     isCardSelected(card: JobCard) {
@@ -455,6 +498,360 @@ export class CursusSystemComponent implements OnInit {
     onOpenSkillModal(skillName:string){
         this.router.navigate(['/skills'],{queryParams:{skill:skillName}});
     }
+
+    //#region NodeGraph
+    initializeCytoscape() {
+        const nodes: cytoscape.NodeDefinition[] = [];
+        const edges: cytoscape.EdgeDefinition[] = [];
+        const BMNodes: { [key: string]: string[] } = {};
+
+        const positions: { [key: string]: { x: number, y: number } } = {};
+        let xPosition = 50;
+
+        this.cursusList.forEach((cursus, index) => {
+            const xOffset = 100;
+            xPosition = 50;
+            if (cursus.diplome === Diplome.BM) {
+                BMNodes[cursus.school] = BMNodes[cursus.school] || [];
+
+                for (let i = 0; i < 5; i++) {
+                    const baseId = `${cursus.value}`;
+                    const nodeId = `bm${i}-${baseId}`;
+                        if(i <= 2){
+                            nodes.push({
+                                data: { id: nodeId, label: `Bachelor ${i + 1} ${cursus.value}` }
+                            });
+                        }
+                        else{
+                            nodes.push({
+                                data: { id: nodeId, label: `Master ${i + 1 } ${cursus.value}` }
+                            });
+                        }
+                        positions[nodeId] = { x: xPosition + i * xOffset, y: index * 100 };
+
+                    if (i > 0) {
+                        edges.push({
+                            data: {
+                                id: `edge-${nodeId}-bm${i-1}-${baseId}`,
+                                source: `bm${i-1}-${baseId}`,
+                                target: nodeId
+                            }
+                        });
+                    }
+
+                    if (i === 2) {
+                        BMNodes[cursus.school].push(nodeId);
+                    }
+                    xPosition += 200;
+                }
+                
+            }
+        });
+
+        this.cursusList.forEach((cursus, index) => {
+            if (cursus.diplome === Diplome.M) {
+                const xOffset = 300;
+                xPosition = 950;
+
+                const node1 = `m1-${cursus.value}`;
+                const node2 = `m2-${cursus.value}`;
+
+                nodes.push({
+                    data: { id: node1, label: `Master 1 ${cursus.value}`}
+                });
+                nodes.push({
+                    data: { id: node2, label: `Master 2 ${cursus.value}` }
+                });
+
+                positions[node1] = { x: xPosition , y: index * 100 };
+                positions[node2] = { x: xPosition + xOffset, y:  index * 100 };
+
+                edges.push({
+                    data: {
+                        id: `edge-${node1}-${node2}`,
+                        source: node1,
+                        target: node2
+                    }
+                });
+
+                if (BMNodes[cursus.school]) {
+                    BMNodes[cursus.school].forEach(BMNodeId => {
+                        edges.push({
+                            data: {
+                                id: `edge-${node1}-${BMNodeId}`,
+                                source: node1,
+                                target: BMNodeId
+                            }
+                        });
+                    });   
+                }
+            }
+            else if (cursus.diplome === Diplome.PM) {
+                const xOffset = 100;
+                xPosition = 50;
+                for (let i = 0; i < 5; i++) {
+                    const baseId = `${cursus.value}`;
+                    const nodeId = `pm${i}-${baseId}`;
+                        if(i <= 1){
+                            nodes.push({
+                                data: { id: nodeId, label: `Prépa ${i + 1} ${cursus.value}` }
+                            });
+                        }
+                        else if(i === 2){
+                            nodes.push({
+                                data: { id: nodeId, label: `Bachelor ${i + 1} ${cursus.value}` }
+                            });
+                        }
+                        else{
+                            nodes.push({
+                                data: { id: nodeId, label: `Master ${i + 1 } ${cursus.value}` }
+                            });
+                        }
+                        positions[nodeId] = { x:  xPosition + i * xOffset, y: index * 100 };
+
+                    if (i > 0) {
+                        edges.push({
+                            data: {
+                                id: `edge-${nodeId}-pm${i-1}-${baseId}`,
+                                source: `pm${i-1}-${baseId}`,
+                                target: nodeId
+                            }
+                        });
+                    }
+                    xPosition += 200;
+                }
+            }
+            else if (cursus.diplome === Diplome.B) {
+                const xOffset = 100;
+                xPosition = 50;
+                for (let i = 0; i < 2; i++) {
+                    const baseId = `${cursus.value}`;
+                    const nodeId = `pm${i}-${baseId}`;
+                        nodes.push({
+                            data: { id: nodeId, label: `Bachelor ${i + 1} ${cursus.value}` }
+                        });
+                        positions[nodeId] = { x:  xPosition + i * xOffset, y: index * 100 };
+
+                    if (i > 0) {
+                        edges.push({
+                            data: {
+                                id: `edge-${nodeId}-pm${i-1}-${baseId}`,
+                                source: `pm${i-1}-${baseId}`,
+                                target: nodeId
+                            }
+                        });
+                    }
+                    xPosition += 200;
+                }
+            }
+        });
+
+        this.cyto = cytoscape({
+            container: this.cyContainer.nativeElement,
+            elements: [
+                ...nodes,
+                ...edges
+            ],
+            style: [
+                {
+                    selector: 'node',
+                    style: {
+                        'background-color': '#666',
+                        'label': 'data(label)',
+                        'color':'#FFFFFF',
+                        'transition-property': 'background-color, width, height',
+                        'transition-duration': 0.3,
+                    }
+                },
+                {
+                    selector: 'edge',
+                    style: {
+                    'width': 3,
+                    'line-color': '#ccc',
+                    'target-arrow-color': '#ccc',
+                    'target-arrow-shape': 'triangle'
+                    }
+                }
+            ],
+            layout: {
+                name: 'preset',
+                positions: positions,
+            },
+            minZoom: 0.65,
+            maxZoom: 2,
+        });
+        
+        this.cyto.on('tap', 'node', (event: any) => {
+            const node = event.target;
+            
+            const nodeId = node.id();
+            const regex = /^(bm|pm|m|b)([0-4])-?/;
+            const match = nodeId.match(regex)
+
+            if(match){
+                const prefix = match[1];
+                const year = match[2];
+
+                const cursusName = nodeId.replace(regex, '');
+
+                console.log("Préfixe :", prefix);
+                console.log("Nombre :", typeof(year));
+                console.log("Reste de la chaîne :", cursusName);
+
+                const newCursus = this.cursusList.find(cursus => 
+                    cursus.value === cursusName
+                );
+
+                console.log(newCursus)
+                if(newCursus){
+                    if(prefix === 'm'){
+                        this.ToggleSelection(newCursus.school, newCursus.value, parseInt(year) +3)
+                    }
+                    else {
+                        this.ToggleSelection(newCursus.school, newCursus.value, parseInt(year) +1)
+                    }
+                    
+                }
+
+
+                node.toggleClass('clicked');
+
+
+                const connectedEdges = node.connectedEdges();
+
+                connectedEdges.forEach((edge: any)=>{
+                    const sourceNode = edge.source();
+                    const targetNode = edge.target();
+
+                    if(sourceNode.id() === nodeId && targetNode.id() === `${prefix}${parseInt(year) +1}-${cursusName}`){
+                        edge.toggleClass('clicked')
+                    } else if(targetNode.id() === nodeId && sourceNode.id() !== `${prefix}${parseInt(year) -1}-${cursusName}`){
+                        edge.toggleClass('clicked')
+                    }
+                    // if((prefix === 'm' || (prefix ==='bm' && year === 3 )) &&  targetNode.hasClass('clicked')){
+                    //     const targetEdges = targetNode.connectedEdges();
+
+                    //     targetEdges.forEach((targetEdge: any)=>{
+                    //         const newSourceNode = targetEdges.source();
+                    //         const newTargetNode = targetEdges.target();
+
+
+
+                    //         if(edge !== targetEdge){
+                    //             targetEdges.removeClass('clicked')
+                    //         }
+
+                    //     });
+                    // }
+                })
+            } 
+            
+        });
+        
+        this.cyto.on('mouseover', 'node', (event: any) => {
+            const node = event.target;
+            const nodeId = node.id();
+            const regex = /^(bm|pm|m|b)([0-4])-?/;
+            const match = nodeId.match(regex)
+
+            if(match){
+                const prefix = match[1];
+                const year = match[2];
+
+                const cursusName = nodeId.replace(regex, '');
+
+                node.addClass('hovered');
+                const connectedEdges = node.connectedEdges();
+
+                connectedEdges.forEach((edge: any)=>{
+                    const sourceNode = edge.source();
+                    const targetNode = edge.target();
+
+                    if(sourceNode.id() === nodeId && targetNode.id() === `${prefix}${parseInt(year) +1}-${cursusName}`){
+                        edge.addClass('hovered')
+                    } else if(targetNode.id() === nodeId && sourceNode.id() !== `${prefix}${parseInt(year) -1}-${cursusName}`){
+                        edge.addClass('hovered')
+                    }
+                })
+            }
+        });
+        
+        this.cyto.on('mouseout', 'node', (event: any) => {
+            const node = event.target;
+            const nodeId = node.id();
+            const regex = /^(bm|pm|m|b)([0-4])-?/;
+            const match = nodeId.match(regex)
+
+            if(match){
+                const prefix = match[1];
+                const year = match[2];
+
+                const cursusName = nodeId.replace(regex, '');
+
+                node.removeClass('hovered');
+                const connectedEdges = node.connectedEdges();
+
+                connectedEdges.forEach((edge: any)=>{
+                    const sourceNode = edge.source();
+                    const targetNode = edge.target();
+
+                    if(sourceNode.id() === nodeId && targetNode.id() === `${prefix}${parseInt(year) +1}-${cursusName}`){
+                        edge.removeClass('hovered')
+                    } else if(targetNode.id() === nodeId && sourceNode.id() !== `${prefix}${parseInt(year) -1}-${cursusName}`){
+                        edge.removeClass('hovered')
+                    }
+                })
+            }
+        });
+        
+        this.cyto.style().selector('node.clicked').style({
+            'background-color': '#FF0015',
+        }).selector('node.hovered').style({
+            'background-color': '#B6FF00',
+        }).selector('node.clicked.hovered').style({
+            'background-color': '#FF6A00',
+        }).update();
+        this.cyto.style().selector('edge.clicked').style({
+            'line-color' : '#FF0015',
+            'width': 6,
+        }).selector('edge.hovered').style({
+            'line-color' : '#B6FF00',
+            'width': 3,
+        }).selector('edge.clicked.hovered').style({
+            'line-color' : '#FF6A00',
+            'width': 6,
+        })
+    }
+    
+    triggerTapOnNode(nodeId: string){
+        const node = this.cyto.getElementById(nodeId);
+        if(node){
+            const nodeId = node.id();
+            const regex = /^(bm|pm|m|b)([0-4])-?/;
+            const match = nodeId.match(regex)
+
+            if(match){
+                const prefix = match[1];
+                const year = match[2];
+
+                const cursusName = nodeId.replace(regex, '');
+                node.toggleClass('clicked');
+                const connectedEdges = node.connectedEdges();
+
+                connectedEdges.forEach((edge: any)=>{
+                    const sourceNode = edge.source();
+                    const targetNode = edge.target();
+
+                    if(sourceNode.id() === nodeId && targetNode.id() === `${prefix}${parseInt(year) +1}-${cursusName}`){
+                        edge.toggleClass('clicked')
+                    } else if(targetNode.id() === nodeId && sourceNode.id() !== `${prefix}${parseInt(year) -1}-${cursusName}`){
+                        edge.toggleClass('clicked')
+                    }
+                })
+            } 
+        }
+    }
+    //#endregion
 }
 
 class Row{

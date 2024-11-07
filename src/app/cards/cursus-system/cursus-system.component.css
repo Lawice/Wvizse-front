@@ -39,7 +39,7 @@
 }
 
 .scroll-rect {
-    height: 600px;
+    height: 1500px;
     width: 400px;
     overflow-y: auto;
     overflow-x: hidden;

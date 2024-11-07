@@ -58,7 +58,7 @@ export const Skills : Skill[] = [
         cursus:Course.ART,
         year: DiplomeYear.B2,
         school: Faculty.HORDE,
-        description:"",
+        description:"La conception visuelle en Game Art désigne l'ensemble des processus créatifs et techniques qui visent à définir l'apparence graphique d'un jeu vidéo. Cette compétence inclut la création d'éléments visuels qui donnent vie au monde du jeu, comme les personnages, les environnements, les objets, les interfaces, et même les effets visuels.",
         picture:"images/test_art.png",
         pictureSmall:"images/test_art2.png"
     },
